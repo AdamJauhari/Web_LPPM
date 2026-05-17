@@ -44,7 +44,7 @@ class AdminController extends Controller
 
         if(Auth::attempt($user_data))
         {
-            return redirect('admin/successlogin');
+            return redirect('login/successlogin');
         }
         else 
         {
@@ -143,7 +143,7 @@ class AdminController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect('/admin');
+        return redirect('/login');
     }
     /**
      * Show the form for creating a new resource.

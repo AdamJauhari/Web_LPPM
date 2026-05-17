@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPPM Admin Panel</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon"><i class="fas fa-shield-alt"></i></div>
+                <h1>LPPM Admin Panel</h1>
+                <p>Universitas Cendekia Abditama</p>
+            </div>
+            <div class="login-body">
+                <label>Token Admin (12 Digit)</label>
+                <div class="token-input-wrapper">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="token-input" maxlength="12" placeholder="Masukkan token 12 digit" autofocus>
+                </div>
+                <div id="login-error" class="login-error" style="display:none"></div>
+                <button id="btn-login" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Masuk</button>
+                <div class="login-footer">
+                    <label><input type="text" id="server-url" value="http://127.0.0.1:8000" style="width:100%;padding:6px 10px;border:1px solid #ddd;border-radius:6px;font-size:12px;text-align:center;margin-top:8px;color:#666"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" style="display:none">
+        <!-- Sidebar -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-cogs"></i> Admin Panel</h2>
+                <span class="sidebar-sub">LPPM UCA</span>
+            </div>
+            <div class="sidebar-sep"></div>
+            <div class="sidebar-menu">
+                <button class="menu-btn active" data-section="dashboard" onclick="switchSection('dashboard')"><i class="fas fa-th-large"></i> Dashboard</button>
+                <button class="menu-btn" data-section="researches" onclick="switchSection('researches')"><i class="fas fa-flask"></i> Penelitian</button>
+                <button class="menu-btn" data-section="community_services" onclick="switchSection('community_services')"><i class="fas fa-hands-helping"></i> Pengabdian</button>
+                <button class="menu-btn" data-section="publications" onclick="switchSection('publications')"><i class="fas fa-file-alt"></i> Publikasi</button>
+                <button class="menu-btn" data-section="organization_members" onclick="switchSection('organization_members')"><i class="fas fa-sitemap"></i> Struktur Organisasi</button>
+                <button class="menu-btn" data-section="users" onclick="switchSection('users')"><i class="fas fa-users"></i> Users</button>
+                <div class="sidebar-sep" style="margin:8px 8px;"></div>
+                <span style="color:rgba(255,255,255,.4);font-size:10px;padding:0 14px;text-transform:uppercase;letter-spacing:1px;">Ajuan Masuk</span>
+                <button class="menu-btn" data-section="research_submissions" onclick="switchSection('research_submissions')"><i class="fas fa-paper-plane"></i> Ajuan Proposal</button>
+                <button class="menu-btn" data-section="journal_submissions" onclick="switchSection('journal_submissions')"><i class="fas fa-journal-whills"></i> Ajuan Jurnal</button>
+            </div>
+            <div class="sidebar-bottom">
+                <button class="menu-btn logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </nav>
+
+        <!-- Content -->
+        <main id="content">
+            <header id="top-bar">
+                <h1 id="page-title"><i class="fas fa-th-large"></i> Dashboard</h1>
+                <span id="connection-badge"><i class="fas fa-circle"></i> Terhubung</span>
+            </header>
+            <div class="gold-line"></div>
+
+            <!-- Dashboard -->
+            <div id="section-dashboard" class="section">
+                <div class="stats-grid" id="stats-grid"></div>
+            </div>
+
+            <!-- Data Table Section -->
+            <div id="section-table" class="section" style="display:none">
+                <div class="toolbar">
+                    <div class="toolbar-left">
+                        <div class="search-box"><i class="fas fa-search"></i><input type="text" id="search-input" placeholder="Cari data..." oninput="searchData()"></div>
+                        <button class="btn btn-green" onclick="refreshData()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                        <button class="btn btn-gold" id="btn-tambah" onclick="openAddModal()"><i class="fas fa-plus"></i> Tambah</button>
+                    </div>
+                    <span class="data-count" id="data-count">0 data</span>
+                </div>
+                <div class="table-wrapper">
+                    <table id="data-table"><thead id="table-head"></thead><tbody id="table-body"></tbody></table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal-overlay" style="display:none" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header"><h3 id="modal-title">Tambah Data</h3><button onclick="closeModal()">&times;</button></div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Batal</button>
+                <button class="btn btn-green" id="modal-save" onclick="saveData()"><i class="fas fa-save"></i> Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

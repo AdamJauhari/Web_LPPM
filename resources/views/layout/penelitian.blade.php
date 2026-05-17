@@ -54,7 +54,29 @@
                             <li class="nav-item"><a class="nav-link" href="{{ url('/pengabdian') }}">Pengabdian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/publikasi') }}">Publikasi</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/#contact-section') }}">Kontak</a></li>
-                            <li class="nav-item"><a class="nav-link btn-login-nav" href="{{ url('/admin') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                            @if(Auth::check())
+                            <li class="nav-item dropdown">
+                                <a class="nav-link btn-profile-nav dropdown-toggle" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right profile-dropdown" aria-labelledby="profileDropdown">
+                                    <div class="dropdown-header-profile">
+                                        <i class="fas fa-user-circle fa-2x"></i>
+                                        <div>
+                                            <strong>{{ Auth::user()->name }}</strong>
+                                            <small>{{ ucfirst(Auth::user()->role ?? 'mahasiswa') }} — {{ Auth::user()->nim_nip ?? '-' }}</small>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ url('/status-peninjauan') }}"><i class="fas fa-clipboard-check"></i> Status Peninjauan</a>
+                                    <a class="dropdown-item" href="{{ url('/jurnal-saya') }}"><i class="fas fa-file-alt"></i> Jurnal Saya</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ url('/login/logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                                </div>
+                            </li>
+                            @else
+                            <li class="nav-item"><a class="nav-link btn-login-nav" href="{{ url('/login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                            @endif
                         </ul>
                     </div>
                 </div>

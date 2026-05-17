@@ -84,38 +84,68 @@
                         </h3>
                         <p style="color: #888; text-align: center; font-size: 14px; margin-bottom: 30px;">Struktur organisasi Lembaga Penelitian dan Pengabdian kepada Masyarakat</p>
                         
-                        <!-- Org Chart -->
+                        @php
+                            $rektor = $orgMembers->firstWhere('position', 'Rektor');
+                            $ketua = $orgMembers->firstWhere('position', 'Ketua LPPM');
+                            $divisi = $orgMembers->filter(function($m) { return !in_array($m->position, ['Rektor','Ketua LPPM']); });
+                        @endphp
+
                         <div style="text-align: center;">
                             <!-- Rektor -->
-                            <div style="display: inline-block; background: #1a4d2e; color: #fff; padding: 12px 30px; border-radius: 8px; font-weight: 600; font-size: 15px; margin-bottom: 10px;">
-                                <i class="fas fa-user-tie" style="margin-right: 8px;"></i>Rektor
+                            <div style="display:inline-block; margin-bottom:10px;">
+                                <div class="org-photo-frame org-photo-lg" style="margin:0 auto 12px;">
+                                    @if($rektor && $rektor->photo)
+                                    <img src="{{ asset('img/organisasi/' . $rektor->photo) }}" alt="{{ $rektor->name ?? 'Rektor' }}" style="object-position:{{ $rektor->photo_position ?? 'center' }}">
+                                    @else
+                                    <div class="org-photo-placeholder"><i class="fas fa-user-tie"></i></div>
+                                    @endif
+                                </div>
+                                <div style="background:#1a4d2e; color:#fff; padding:12px 30px; border-radius:8px; font-weight:600; font-size:15px;">
+                                    <i class="fas fa-user-tie" style="margin-right:8px;"></i>Rektor
+                                </div>
+                                @if($rektor && $rektor->name !== '-')
+                                <div style="color:#555; font-size:13px; margin-top:6px; font-weight:500;">{{ $rektor->name }}</div>
+                                @endif
                             </div>
-                            <div style="width: 2px; height: 30px; background: #1a4d2e; margin: 0 auto;"></div>
+                            <div style="width:2px; height:30px; background:#1a4d2e; margin:0 auto;"></div>
+
                             <!-- Ketua LPPM -->
-                            <div style="display: inline-block; background: #c4992a; color: #fff; padding: 12px 30px; border-radius: 8px; font-weight: 600; font-size: 15px; margin-bottom: 10px;">
-                                <i class="fas fa-user-graduate" style="margin-right: 8px;"></i>Ketua LPPM
+                            <div style="display:inline-block; margin-bottom:10px;">
+                                <div class="org-photo-frame org-photo-lg" style="margin:0 auto 12px; border-color:#c4992a;">
+                                    @if($ketua && $ketua->photo)
+                                    <img src="{{ asset('img/organisasi/' . $ketua->photo) }}" alt="{{ $ketua->name ?? 'Ketua LPPM' }}" style="object-position:{{ $ketua->photo_position ?? 'center' }}">
+                                    @else
+                                    <div class="org-photo-placeholder"><i class="fas fa-user-graduate"></i></div>
+                                    @endif
+                                </div>
+                                <div style="background:#c4992a; color:#fff; padding:12px 30px; border-radius:8px; font-weight:600; font-size:15px;">
+                                    <i class="fas fa-user-graduate" style="margin-right:8px;"></i>Ketua LPPM
+                                </div>
+                                @if($ketua && $ketua->name !== '-')
+                                <div style="color:#555; font-size:13px; margin-top:6px; font-weight:500;">{{ $ketua->name }}</div>
+                                @endif
                             </div>
-                            <div style="width: 2px; height: 30px; background: #c4992a; margin: 0 auto;"></div>
+                            <div style="width:2px; height:30px; background:#c4992a; margin:0 auto;"></div>
+
                             <!-- Divisi -->
-                            <div class="row" style="max-width: 800px; margin: 0 auto;">
+                            <div class="row" style="max-width: 900px; margin: 0 auto;">
+                                @foreach($divisi as $member)
                                 <div class="col-md-4 mb-3">
-                                    <div style="background: #e8f0eb; border: 2px solid #1a4d2e; padding: 15px; border-radius: 8px;">
-                                        <i class="fas fa-flask" style="color: #1a4d2e; font-size: 20px; display: block; margin-bottom: 8px;"></i>
-                                        <strong style="color: #1a4d2e; font-size: 13px;">Kepala Pusat Penelitian</strong>
+                                    <div style="background:#e8f0eb; border:2px solid #1a4d2e; padding:20px 15px; border-radius:12px; text-align:center;">
+                                        <div class="org-photo-frame org-photo-sm" style="margin:0 auto 12px;">
+                                            @if($member->photo)
+                                            <img src="{{ asset('img/organisasi/' . $member->photo) }}" alt="{{ $member->name }}" style="object-position:{{ $member->photo_position ?? 'center' }}">
+                                            @else
+                                            <div class="org-photo-placeholder"><i class="fas fa-user-circle"></i></div>
+                                            @endif
+                                        </div>
+                                        <strong style="color:#1a4d2e; font-size:13px; display:block;">{{ $member->position }}</strong>
+                                        @if($member->name !== '-')
+                                        <small style="color:#555; font-size:12px;">{{ $member->name }}</small>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <div style="background: #e8f0eb; border: 2px solid #1a4d2e; padding: 15px; border-radius: 8px;">
-                                        <i class="fas fa-hands-helping" style="color: #1a4d2e; font-size: 20px; display: block; margin-bottom: 8px;"></i>
-                                        <strong style="color: #1a4d2e; font-size: 13px;">Kepala Pusat Pengabdian</strong>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <div style="background: #e8f0eb; border: 2px solid #1a4d2e; padding: 15px; border-radius: 8px;">
-                                        <i class="fas fa-book" style="color: #1a4d2e; font-size: 20px; display: block; margin-bottom: 8px;"></i>
-                                        <strong style="color: #1a4d2e; font-size: 13px;">Kepala Pusat Publikasi & HKI</strong>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -154,5 +184,47 @@
             </div>
         </div>
     </section>
+
+<style>
+/* Org Photo Frame - Rounded Rectangle with Gold Border */
+.org-photo-frame {
+    border: 3px solid #c4992a;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #1a4d2e;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    transition: transform .3s, box-shadow .3s;
+}
+.org-photo-frame:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+}
+.org-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.org-photo-lg {
+    width: 130px;
+    height: 160px;
+}
+.org-photo-sm {
+    width: 100px;
+    height: 120px;
+}
+.org-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a4d2e, #2d6b42);
+}
+.org-photo-placeholder i {
+    font-size: 40px;
+    color: rgba(255,255,255,.5);
+}
+</style>
 
 @endsection

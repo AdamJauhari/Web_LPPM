@@ -183,7 +183,7 @@
             </div>
 
             @if(isset(Auth::user()->email))
-                <script>window.location="/admin/successlogin";</script>
+                <script>window.location="/login/successlogin";</script>
             @endif
 
             @if ($message = Session::get('error'))
@@ -193,7 +193,7 @@
                 </div>
             @endif
 
-            <form method="post" action="{{url( '/admin/checklogin' )}}">
+            <form method="post" action="{{url( '/login/checklogin' )}}">
                 @csrf
                 <div class="form-group">
                     <label for="email"><i class="fas fa-envelope" style="margin-right: 5px;"></i>Email</label>

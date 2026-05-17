@@ -20,7 +20,8 @@ Route::get('/', 'HomeController@index');
 
 // Tentang LPPM
 Route::get('/tentang', function () {
-    return view('tentang');
+    $orgMembers = DB::table('organization_members')->orderBy('sort_order')->get();
+    return view('tentang', compact('orgMembers'));
 });
 
 // Penelitian
@@ -65,10 +66,18 @@ Route::put('/admin/successlogin/publikasi/{publications}', 'PublikasiController@
 Route::delete('/admin/successlogin/publikasi/{publications}', 'PublikasiController@destroy');
 
 // User Login (Mahasiswa & Dosen)
-Route::get('/admin', 'AdminController@index');
-Route::post('/admin/checklogin', 'AdminController@checklogin');
-Route::get('/admin/successlogin', function() { return redirect('/'); });
-Route::get('/admin/logout', 'AdminController@logout');
+Route::get('/login', 'AdminController@index');
+Route::post('/login/checklogin', 'AdminController@checklogin');
+Route::get('/login/successlogin', function() { return redirect('/'); });
+Route::get('/login/logout', 'AdminController@logout');
+
+// Ajuan & Status
+Route::get('/ajukan-penelitian', 'SubmissionController@createResearch');
+Route::post('/ajukan-penelitian', 'SubmissionController@storeResearch');
+Route::get('/ajukan-jurnal', 'SubmissionController@createJournal');
+Route::post('/ajukan-jurnal', 'SubmissionController@storeJournal');
+Route::get('/status-peninjauan', 'SubmissionController@statusPeninjauan');
+Route::get('/jurnal-saya', 'SubmissionController@jurnalSaya');
 
 Route::get('/forkomil-dan-conferences', function () {
     return view('forkomil-dan-conferences');
@@ -99,3 +108,15 @@ Route::get('/download', function () {
 // Auth::routes();
 
 // Route::get('/admin/successlogin', 'AdminController@successlogin')->name('admin');
+
+// === Admin API (untuk Electron Admin Panel) ===
+Route::prefix('api/admin')->group(function () {
+    Route::post('/verify', 'AdminApiController@verify');
+    Route::get('/stats', 'AdminApiController@stats');
+    Route::post('/upload-photo', 'AdminApiController@uploadPhoto');
+    Route::get('/list/{table}', 'AdminApiController@list');
+    Route::get('/show/{table}/{id}', 'AdminApiController@show');
+    Route::post('/store/{table}', 'AdminApiController@store');
+    Route::put('/update/{table}/{id}', 'AdminApiController@update');
+    Route::delete('/delete/{table}/{id}', 'AdminApiController@destroy');
+});

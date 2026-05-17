@@ -3614,3 +3614,96 @@ display: inline;
 text-align: right;
 padding-left: 10px;
 }
+
+/* === Profile Dropdown & Login Button === */
+.btn-login-nav {
+    background: #c4992a !important;
+    color: #fff !important;
+    border-radius: 20px !important;
+    padding: 6px 18px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease;
+}
+.btn-login-nav:hover {
+    background: #d4a94a !important;
+    transform: translateY(-1px);
+}
+.btn-profile-nav {
+    background: rgba(196,153,42,.15) !important;
+    color: #c4992a !important;
+    border-radius: 20px !important;
+    padding: 6px 18px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease;
+    line-height: 1.4 !important;
+    display: flex !important;
+    align-items: center;
+    height: auto !important;
+    position: static !important;
+}
+.btn-profile-nav::after,
+.btn-profile-nav::before {
+    display: none !important;
+}
+.btn-profile-nav:hover {
+    background: rgba(196,153,42,.25) !important;
+}
+.btn-profile-nav i {
+    margin-right: 4px;
+}
+.nav-item.dropdown {
+    display: flex;
+    align-items: center;
+    border: none !important;
+    margin-right: 0 !important;
+}
+.profile-dropdown {
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,.15) !important;
+    padding: 0 !important;
+    overflow: hidden;
+    min-width: 240px;
+    margin-top: 8px !important;
+}
+.dropdown-header-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #1a4d2e, #2d6b42);
+    color: #fff;
+}
+.dropdown-header-profile i {
+    color: #c4992a;
+    font-size: 28px;
+}
+.dropdown-header-profile strong {
+    display: block;
+    font-size: 14px;
+}
+.dropdown-header-profile small {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,.75);
+    margin-top: 2px;
+}
+.profile-dropdown .dropdown-item {
+    padding: 10px 18px;
+    font-size: 14px;
+    color: #333;
+    transition: 0.15s;
+}
+.profile-dropdown .dropdown-item:hover {
+    background: rgba(196,153,42,.1);
+    color: #c4992a;
+}
+.profile-dropdown .dropdown-item i {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}

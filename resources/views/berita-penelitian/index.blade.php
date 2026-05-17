@@ -27,6 +27,14 @@
                             </p>
                         </div>
 
+                        @if(Auth::check())
+                        <div style="display:flex; gap:10px; margin-bottom:25px; flex-wrap:wrap;">
+                            <a href="{{ url('/ajukan-penelitian') }}" style="display:inline-flex; align-items:center; gap:6px; background:#1a4d2e; color:#fff; padding:10px 20px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:.2s;" onmouseover="this.style.background='#2d6b42'" onmouseout="this.style.background='#1a4d2e'">
+                                <i class="fas fa-paper-plane"></i> Ajukan Proposal Penelitian
+                            </a>
+                        </div>
+                        @endif
+
                         @forelse( $researches as $rsc )
                         <article class="blog_item">
                             <div class="blog_item_img">
