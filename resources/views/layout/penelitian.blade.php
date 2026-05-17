@@ -16,51 +16,47 @@
 </head>
 <body>
 
+    <style>
+        .navbar-brand-custom { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .navbar-brand-custom img { height: 40px; width: 40px; border-radius: 8px; object-fit: cover; }
+        .navbar-brand-custom span { color: #fff; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .menu_nav .nav-item .nav-link { position: relative; transition: color 0.3s ease; }
+        .menu_nav .nav-item .nav-link:not(.btn-login-nav)::after { content: ''; position: absolute; bottom: 25px; left: 50%; width: 0; height: 2px; background: #c4992a; transition: all 0.3s ease; transform: translateX(-50%); }
+        .menu_nav .nav-item:hover .nav-link:not(.btn-login-nav)::after, .menu_nav .nav-item.active .nav-link:not(.btn-login-nav)::after { width: 60%; display: block !important; }
+        .btn-login-nav { background: linear-gradient(135deg, #c4992a, #d4a94a) !important; color: #fff !important; border: none !important; border-radius: 22px !important; padding: 8px 22px !important; font-size: 13px !important; font-weight: 600 !important; letter-spacing: 0.5px; transition: all 0.3s ease !important; box-shadow: 0 2px 8px rgba(196, 153, 42, 0.3); line-height: normal !important; margin-top: 20px !important; display: inline-flex !important; align-items: center; gap: 6px; }
+        .btn-login-nav:hover { background: linear-gradient(135deg, #d4a94a, #e0bc5e) !important; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(196, 153, 42, 0.4); }
+        @media (max-width: 991px) {
+            .menu_nav .nav-item .nav-link:not(.btn-login-nav)::after,
+            .menu_nav .nav-item:hover .nav-link:not(.btn-login-nav)::after,
+            .menu_nav .nav-item.active .nav-link:not(.btn-login-nav)::after { display: none !important; width: 0 !important; }
+            .btn-login-nav { margin-top: 8px !important; margin-bottom: 12px !important; }
+        }
+    </style>
+
     <header class="header_area">	
         <div class="main_menu">
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container">
-                    <!-- Brand and toggle get grouped for better mobile display -->
-                    <a class="navbar-brand logo_h" href="{{ url('/') }}">LPPM</a>
+                    <a class="navbar-brand-custom" href="{{ url('/') }}">
+                        <img src="{{ asset('img/logo-uca.jpg') }}" alt="Logo UCA">
+                        <span>LPPM</span>
+                    </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li> 
-                            <li class="nav-item"><a class="nav-link" href="http://machung.ac.id/">Ma Chung</a></li> 
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/tentang') }}">Tentang</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/penelitian') }}">Penelitian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/pengabdian') }}">Pengabdian</a></li> 
-                            <!-- <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Sign In</a></li> 
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/download') }}">Download</a></li>   -->
-                            <!-- <li class="nav-item"><a class="nav-link" href="price.html">Price</a></li>     
-                            <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="feature.html">Features</a></li> 
-                                    <li class="nav-item"><a class="nav-link" href="price.html">Price</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="element.html">Element</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="single-blog.html">Blog Details</a></li>
-                                </ul>
-                            </li>  -->
-                            <li class="nav-item"><a class="nav-link" href="#footer">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/publikasi') }}">Publikasi</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/#contact-section') }}">Kontak</a></li>
+                            <li class="nav-item"><a class="nav-link btn-login-nav" href="{{ url('/admin') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
                         </ul>
                     </div>
-                    <!-- <div class="right-button">
-                        <ul>
-                            <li class="shop-icon"><a href="#"><i class="ti-shopping-cart-full"></i><span>0</span></a></li>
-                            <li><a class="sign_up" href="">Sign Up</a></li>
-                        </ul>
-                    </div>  -->
                 </div>
             </nav>
         </div>
@@ -89,38 +85,37 @@
             <div class="row">
 
                 <div class="col-lg-6 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
-                    <img src="../img/Logo-UMC-White.png" alt="" class="img-icon mb-20">
-                    <p>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT (LPPM) <br>UNIVERSITAS MA CHUNG</p>
-                    <P> </P>
+                    <img src="../img/logo-uca.jpg" alt="" class="img-icon mb-20" style="max-width: 100px; border-radius: 8px;">
+                    <p>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT (LPPM) <br>UNIVERSITAS CENDEKIA ABDITAMA</p>
                     <ul>
-                        <li><a href="mailto:lppm@machung.ac.id" class=>Email: lppm@machung.ac.id </a><br><a href="tel:0341-550151">Telp: 0341-550151 (ext. 4010)</a></li>
+                        <li><a href="mailto:info@uca.ac.id">Email: info@uca.ac.id</a></li>
+                        <li><a href="https://uca.ac.id">Website: uca.ac.id</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
-                    <h4>Location</h4>
-                    <P>Villa Puncak Tidar N-01 <br>Ged. RnD Lt. Ground <br>Malang 65151 <br>Indonesia</P>
+                    <h4>Lokasi</h4>
+                    <p>Kompleks Pendidikan Islamic Village <br>Jl. Islamic Raya, Kelapa Dua <br>Tangerang - Banten <br>Indonesia</p>
                 </div>
 
                 <div class="col-lg-3 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
-                    <h4>Link</h4>
+                    <h4>Tautan</h4>
                     <ul>
+                        <li><a href="https://uca.ac.id">Universitas Cendekia Abditama</a></li>
                         <li><a href="http://sinta.ristekbrin.go.id/">SINTA</a></li>
                         <li><a href="http://simlitabmas.ristekdikti.go.id/">SIMLITABMAS</a></li>
-                        <li><a href="http://semar.machung.ac.id/">SEMAR (Sistem Manajemen Abdimas dan Riset Ma Chung)</a></li>
-                        <li><a href="https://senam.machung.ac.id/">SENAM (Seminar Nasional Pengabdian Kepada Masyarakat Ma Chung)</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom row align-items-center text-center text-lg-left no-gutters">
                 <p class="footer-text m-0 col-lg-8 col-md-12">
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> Universitas Ma Chung
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> Universitas Cendekia Abditama
                 </p>
                 <div class="col-lg-4 col-md-12 text-center text-lg-right footer-social">
-                    <a href="https://www.facebook.com/Universitas.Ma.Chung"><i class="ti-facebook"></i></a>
-                    <a href="https://twitter.com/ma_chung"><i class="ti-twitter"></i></a>
-                    <a href="https://www.instagram.com/universitasmachung/"><i class="ti-instagram"></i></a>
-                    <a href="https://www.youtube.com/channel/UCujbjU-9Ce5q0zTuTot5wQw"><i class="ti-youtube"></i></a>
+                    <a href="https://uca.ac.id"><i class="ti-world"></i></a>
+                    <a href="#"><i class="ti-facebook"></i></a>
+                    <a href="#"><i class="ti-instagram"></i></a>
+                    <a href="#"><i class="ti-youtube"></i></a>
                 </div>
             </div>
         </div>
@@ -137,5 +132,33 @@
     <script src="{{asset('js/jquery.form.js')}}"></script>
     <script src="{{asset('js/jquery.validate.min.js')}}"></script>
     <script src="{{asset('js/theme.js')}}"></script>
+
+    {{-- Slow Parallax like uca.ac.id --}}
+    <script>
+    (function() {
+        var heroBanner = document.querySelector('.hero-banner');
+        var speed = 0.5;
+        var ticking = false;
+
+        function onScroll() {
+            var scrollY = window.pageYOffset;
+            if (heroBanner) {
+                var rect = heroBanner.getBoundingClientRect();
+                if (rect.bottom > 0) {
+                    heroBanner.style.backgroundPositionY = 'calc(30% + ' + (scrollY * speed) + 'px)';
+                }
+            }
+            ticking = false;
+        }
+
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(onScroll);
+                ticking = true;
+            }
+        }, { passive: true });
+    })();
+    </script>
+
 </body>
 </html>

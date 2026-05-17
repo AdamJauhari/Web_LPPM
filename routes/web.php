@@ -18,6 +18,11 @@ use App\Mail\DemoEmail;
 // Home
 Route::get('/', 'HomeController@index');
 
+// Tentang LPPM
+Route::get('/tentang', function () {
+    return view('tentang');
+});
+
 // Penelitian
 Route::get('/penelitian', 'PenelitianController@index');
 Route::get('/admin/successlogin/penelitian/create', 'PenelitianController@create');
@@ -59,22 +64,10 @@ Route::get('/publikasi/download/{publications}', 'PublikasiController@getDownloa
 Route::put('/admin/successlogin/publikasi/{publications}', 'PublikasiController@update');
 Route::delete('/admin/successlogin/publikasi/{publications}', 'PublikasiController@destroy');
 
-// Admin
+// User Login (Mahasiswa & Dosen)
 Route::get('/admin', 'AdminController@index');
 Route::post('/admin/checklogin', 'AdminController@checklogin');
-Route::get('/admin/successlogin', 'AdminController@successlogin');
-Route::get('/admin/{users}/edit', 'AdminController@edit');
-Route::get('/admin/successlogin/penelitian', 'AdminController@penelitian');
-Route::get('/admin/successlogin/pengabdian', 'AdminController@pengabdian');
-Route::get('/admin/successlogin/publikasi', 'AdminController@publikasi');
-Route::get('/admin/successlogin/kepakaran', 'AdminController@kepakaran');
-// Route::group(['middleware' =>  'auth'], function(){
-//     Route::get('/admin/{users}/edit', 'AdminController@edit')
-//         ->name('admin/edit');
-
-//     Route::put('/admin/update', 'AdminController@update');
-// });
-Route::put('/admin/update', 'AdminController@update');
+Route::get('/admin/successlogin', function() { return redirect('/'); });
 Route::get('/admin/logout', 'AdminController@logout');
 
 Route::get('/forkomil-dan-conferences', function () {

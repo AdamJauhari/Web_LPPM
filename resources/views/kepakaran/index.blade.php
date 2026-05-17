@@ -1,6 +1,6 @@
 @extends('layout/main')
     
-@section('title', 'Kepakaran Lembaga Penelitian dan Pengabdian Kepada Masyarakat Universitas Ma Chung')
+@section('title', 'Kepakaran Lembaga Penelitian dan Pengabdian Kepada Masyarakat Universitas Cendekia Abditama')
 
 @section('container')
     <section class="hero-banner d-flex align-items-center">

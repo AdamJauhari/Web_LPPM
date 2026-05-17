@@ -2,7 +2,7 @@
 
 @section('container')
     <div class="container">
-        <h2 class="mb-5">Profil Dosen/Peneliti Universitas Ma Chung</h2>
+        <h2 class="mb-5">Profil Dosen/Peneliti Universitas Cendekia Abditama</h2>
         <div class="single-post">
             <div class="feature-img">
                 @if ($expertises->image)

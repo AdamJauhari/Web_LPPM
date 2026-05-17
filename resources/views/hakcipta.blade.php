@@ -11,7 +11,7 @@
 
     <section class="blog_area area-padding">
         <div class="container">
-            <p style="font-size:16px">Hak Cipta di LPPM Universitas Ma Chung mengalami peningkatan di tiap tahunnya. 
+            <p style="font-size:16px">Hak Cipta di LPPM Universitas Cendekia Abditama mengalami peningkatan di tiap tahunnya. 
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
             ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco 
             laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in 

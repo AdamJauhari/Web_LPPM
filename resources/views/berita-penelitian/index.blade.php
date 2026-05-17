@@ -13,8 +13,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="blog_left_sidebar">                        
-                        @foreach( $researches as $rsc )
+                    <div class="blog_left_sidebar">
+                        <!-- Deskripsi Halaman Penelitian -->
+                        <div style="background: #f0f7f2; border-left: 4px solid #1a4d2e; border-radius: 0 8px 8px 0; padding: 25px 30px; margin-bottom: 35px;">
+                            <h4 style="color: #1a4d2e; font-size: 18px; font-weight: 700; margin-bottom: 10px;">
+                                <i class="fas fa-flask" style="margin-right: 8px;"></i>Tentang Penelitian
+                            </h4>
+                            <p style="color: #555; font-size: 14px; line-height: 24px; margin-bottom: 0;">
+                                Halaman ini menampilkan daftar kegiatan penelitian yang dilakukan oleh dosen dan peneliti 
+                                Universitas Cendekia Abditama. Penelitian yang dipublikasikan mencakup berbagai bidang ilmu 
+                                sesuai dengan program studi yang tersedia di universitas. Setiap penelitian telah melalui 
+                                proses review dan persetujuan oleh LPPM.
+                            </p>
+                        </div>
+
+                        @forelse( $researches as $rsc )
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 @if ($rsc->thumbnail)
@@ -25,7 +38,6 @@
                                 
                                 <a href="/penelitian/{{ $rsc->slug }}" class="blog_item_date">
                                     <h3>{{ $rsc->date }}</h3>
-                                    <!-- <p>Jan</p> -->
                                 </a>
                             </div>
                         
@@ -39,7 +51,27 @@
                                 </ul>
                             </div>
                         </article>
-                        @endforeach
+                        @empty
+                        <!-- Empty State -->
+                        <div style="text-align: center; padding: 60px 30px; background: #fff; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.05);">
+                            <div style="width: 100px; height: 100px; background: #e8f0eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fas fa-microscope" style="font-size: 40px; color: #1a4d2e;"></i>
+                            </div>
+                            <h4 style="color: #1d1d1d; font-size: 20px; margin-bottom: 12px;">Belum Ada Penelitian</h4>
+                            <p style="color: #888; font-size: 14px; max-width: 400px; margin: 0 auto 20px; line-height: 24px;">
+                                Saat ini belum ada data penelitian yang dipublikasikan. 
+                                Data penelitian akan muncul di sini setelah ditambahkan oleh administrator melalui panel admin.
+                            </p>
+                            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                                <a href="{{ url('/') }}" style="color: #fff; background: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; padding: 10px 24px; border-radius: 6px;">
+                                    <i class="fas fa-home" style="margin-right: 6px;"></i>Kembali ke Beranda
+                                </a>
+                                <a href="{{ url('/pengabdian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #1a4d2e; padding: 10px 24px; border-radius: 6px;">
+                                    Lihat Pengabdian →
+                                </a>
+                            </div>
+                        </div>
+                        @endforelse
                     
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
@@ -48,7 +80,6 @@
                                 </li>
                             </ul>
                         </nav>
-                        <!-- <div>{{ $researches->links() }}</div> -->
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -75,7 +106,7 @@
                         </aside>
 
                         <aside class="single_sidebar_widget popular_post_widget">
-                            <h4 class="widget_title">e-Jurnal Universitas Ma Chung</h4>
+                            <h4 class="widget_title">e-Jurnal Universitas Cendekia Abditama</h4>
                             <div class="media post_item">
                                 <!-- <img src="img/blog/popular-post/post1.jpg" alt="post"> -->
                                 <div class="media-body">

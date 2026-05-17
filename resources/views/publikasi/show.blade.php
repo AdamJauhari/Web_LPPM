@@ -172,7 +172,7 @@
             </aside>
 
             <aside class="single_sidebar_widget popular_post_widget">
-                <h4 class="widget_title">e-Jurnal Universitas Ma Chung</h4>
+                <h4 class="widget_title">e-Jurnal Universitas Cendekia Abditama</h4>
                 <div class="media post_item">
                     <!-- <img src="img/blog/popular-post/post1.jpg" alt="post"> -->
                     <div class="media-body">

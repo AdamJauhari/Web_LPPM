@@ -13,8 +13,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="blog_left_sidebar">                        
-                        @foreach( $comserv as $cs )
+                    <div class="blog_left_sidebar">
+                        <!-- Deskripsi Halaman Pengabdian -->
+                        <div style="background: #f0f7f2; border-left: 4px solid #1a4d2e; border-radius: 0 8px 8px 0; padding: 25px 30px; margin-bottom: 35px;">
+                            <h4 style="color: #1a4d2e; font-size: 18px; font-weight: 700; margin-bottom: 10px;">
+                                <i class="fas fa-hands-helping" style="margin-right: 8px;"></i>Tentang Pengabdian Kepada Masyarakat
+                            </h4>
+                            <p style="color: #555; font-size: 14px; line-height: 24px; margin-bottom: 0;">
+                                Halaman ini menampilkan daftar kegiatan pengabdian kepada masyarakat yang dilaksanakan oleh 
+                                dosen dan civitas akademika Universitas Cendekia Abditama. Program pengabdian ini bertujuan 
+                                untuk mengimplementasikan hasil penelitian dan keilmuan dalam membantu menyelesaikan 
+                                permasalahan di masyarakat.
+                            </p>
+                        </div>
+
+                        @forelse( $comserv as $cs )
                         <article class="blog_item">
                             <div class="blog_item_img">
                                 @if ($cs->thumbnail)
@@ -25,7 +38,6 @@
                                 
                                 <a href="/pengabdian/{{ $cs->slug }}" class="blog_item_date">
                                     <h3>{{ $cs->date }}</h3>
-                                    <!-- <p>Jan</p> -->
                                 </a>
                             </div>
                         
@@ -39,7 +51,27 @@
                                 </ul>
                             </div>
                         </article>
-                        @endforeach
+                        @empty
+                        <!-- Empty State -->
+                        <div style="text-align: center; padding: 60px 30px; background: #fff; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.05);">
+                            <div style="width: 100px; height: 100px; background: #e8f0eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
+                                <i class="fas fa-people-carry" style="font-size: 40px; color: #1a4d2e;"></i>
+                            </div>
+                            <h4 style="color: #1d1d1d; font-size: 20px; margin-bottom: 12px;">Belum Ada Pengabdian</h4>
+                            <p style="color: #888; font-size: 14px; max-width: 400px; margin: 0 auto 20px; line-height: 24px;">
+                                Saat ini belum ada data pengabdian kepada masyarakat yang dipublikasikan. 
+                                Data pengabdian akan muncul di sini setelah ditambahkan oleh administrator melalui panel admin.
+                            </p>
+                            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                                <a href="{{ url('/') }}" style="color: #fff; background: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; padding: 10px 24px; border-radius: 6px;">
+                                    <i class="fas fa-home" style="margin-right: 6px;"></i>Kembali ke Beranda
+                                </a>
+                                <a href="{{ url('/penelitian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #1a4d2e; padding: 10px 24px; border-radius: 6px;">
+                                    Lihat Penelitian →
+                                </a>
+                            </div>
+                        </div>
+                        @endforelse
                     
                         <nav class="blog-pagination justify-content-center d-flex">
                             <ul class="pagination">
@@ -74,7 +106,7 @@
                         </aside>
 
                         <aside class="single_sidebar_widget popular_post_widget">
-                            <h4 class="widget_title">e-Jurnal Universitas Ma Chung</h4>
+                            <h4 class="widget_title">e-Jurnal Universitas Cendekia Abditama</h4>
                             <div class="media post_item">
                                 <!-- <img src="img/blog/popular-post/post1.jpg" alt="post"> -->
                                 <div class="media-body">

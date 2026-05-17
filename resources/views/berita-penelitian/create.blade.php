@@ -12,11 +12,11 @@
                         <!-- <div class="col-lg-3 offset-lg-9 col-xl-11 offset-xl-1">
                             
                         </div> -->
-                        <img src="/img/logo-umc.png" alt="" class="img">
+                        <img src="/img/logo-uca.jpg" alt="" class="img">
                         <div class="col-lg-3 offset-lg-9 col-xl-10 offset-xl-2">
                             
                             <div class="banner_content">
-                                <h3>Universitas Ma Chung</h3>
+                                <h3>Universitas Cendekia Abditama</h3>
                                 <h4>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT (LPPM) <br>(Center for Research and Community Service)</h4>
                             </div>
                         </div>

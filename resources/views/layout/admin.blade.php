@@ -31,7 +31,7 @@
                     <!-- <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li> 
-                            <li class="nav-item"><a class="nav-link" href="http://machung.ac.id/">Ma Chung</a></li> 
+                            <li class="nav-item"><a class="nav-link" href="https://uca.ac.id/">UCA</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/penelitian') }}">Penelitian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/pengabdian') }}">Pengabdian</a></li>  -->
                             <!-- <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Sign In</a></li> 
@@ -74,8 +74,8 @@
             <div class="row">
 
                 <div class="col-lg-6 col-sm-6 mb-4 mb-xl-0 single-footer-widget">
-                    <img src="../img/Logo-UMC-White.png" alt="" class="img-icon mb-20">
-                    <p>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT (LPPM) <br>UNIVERSITAS MA CHUNG</p>
+                    <img src="../img/logo-uca.jpg" alt="" class="img-icon mb-20">
+                    <p>LEMBAGA PENELITIAN DAN PENGABDIAN KEPADA MASYARAKAT (LPPM) <br>Universitas Cendekia Abditama</p>
                     <P> </P>
                     <ul>
                         <li><a href="mailto:lppm@machung.ac.id" class=>Email: lppm@machung.ac.id </a><br><a href="tel:0341-550151">Telp: 0341-550151 (ext. 4010)</a></li>
@@ -92,14 +92,14 @@
                     <ul>
                         <li><a href="http://sinta.ristekbrin.go.id/">SINTA</a></li>
                         <li><a href="http://simlitabmas.ristekdikti.go.id/">SIMLITABMAS</a></li>
-                        <li><a href="http://semar.machung.ac.id/">SEMAR (Sistem Manajemen Abdimas dan Riset Ma Chung)</a></li>
-                        <li><a href="https://jacips.machung.ac.id/">SENAM (Seminar Nasional Pengabdian Kepada Masyarakat Ma Chung)</a></li>
+                        <li><a href="http://semar.machung.ac.id/">SEMAR (Sistem Manajemen Abdimas dan Riset Cendekia Abditama)</a></li>
+                        <li><a href="https://jacips.machung.ac.id/">SENAM (Seminar Nasional Pengabdian Kepada Masyarakat Cendekia Abditama)</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom row align-items-center text-center text-lg-left no-gutters">
                 <p class="footer-text m-0 col-lg-8 col-md-12">
-                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> Universitas Ma Chung
+                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> Universitas Cendekia Abditama
                 </p>
                 <div class="col-lg-4 col-md-12 text-center text-lg-right footer-social">
                     <a href="https://www.facebook.com/Universitas.Ma.Chung"><i class="ti-facebook"></i></a>
