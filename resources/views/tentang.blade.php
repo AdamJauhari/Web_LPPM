@@ -90,58 +90,63 @@
                             $divisi = $orgMembers->filter(function($m) { return !in_array($m->position, ['Rektor','Ketua LPPM']); });
                         @endphp
 
-                        <div style="text-align: center;">
+                        <div class="org-chart-wrapper">
                             <!-- Rektor -->
-                            <div style="display:inline-block; margin-bottom:10px;">
-                                <div class="org-photo-frame org-photo-lg" style="margin:0 auto 12px;">
+                            <div class="org-chart-node">
+                                <div class="org-photo-frame org-photo-compact" style="margin:0 auto 8px;">
                                     @if($rektor && $rektor->photo)
                                     <img src="{{ asset('img/organisasi/' . $rektor->photo) }}" alt="{{ $rektor->name ?? 'Rektor' }}" style="object-position:{{ $rektor->photo_position ?? 'center' }}">
                                     @else
                                     <div class="org-photo-placeholder"><i class="fas fa-user-tie"></i></div>
                                     @endif
                                 </div>
-                                <div style="background:#1a4d2e; color:#fff; padding:12px 30px; border-radius:8px; font-weight:600; font-size:15px;">
-                                    <i class="fas fa-user-tie" style="margin-right:8px;"></i>Rektor
+                                <div class="org-label org-label-primary">
+                                    <i class="fas fa-user-tie" style="margin-right:6px;"></i>Rektor
                                 </div>
                                 @if($rektor && $rektor->name !== '-')
-                                <div style="color:#555; font-size:13px; margin-top:6px; font-weight:500;">{{ $rektor->name }}</div>
+                                <div class="org-name">{{ $rektor->name }}</div>
                                 @endif
                             </div>
-                            <div style="width:2px; height:30px; background:#1a4d2e; margin:0 auto;"></div>
+
+                            <!-- Connector line -->
+                            <div class="org-connector"></div>
 
                             <!-- Ketua LPPM -->
-                            <div style="display:inline-block; margin-bottom:10px;">
-                                <div class="org-photo-frame org-photo-lg" style="margin:0 auto 12px; border-color:#c4992a;">
+                            <div class="org-chart-node">
+                                <div class="org-photo-frame org-photo-compact" style="margin:0 auto 8px; border-color:#c4992a;">
                                     @if($ketua && $ketua->photo)
                                     <img src="{{ asset('img/organisasi/' . $ketua->photo) }}" alt="{{ $ketua->name ?? 'Ketua LPPM' }}" style="object-position:{{ $ketua->photo_position ?? 'center' }}">
                                     @else
                                     <div class="org-photo-placeholder"><i class="fas fa-user-graduate"></i></div>
                                     @endif
                                 </div>
-                                <div style="background:#c4992a; color:#fff; padding:12px 30px; border-radius:8px; font-weight:600; font-size:15px;">
-                                    <i class="fas fa-user-graduate" style="margin-right:8px;"></i>Ketua LPPM
+                                <div class="org-label org-label-gold">
+                                    <i class="fas fa-user-graduate" style="margin-right:6px;"></i>Ketua LPPM
                                 </div>
                                 @if($ketua && $ketua->name !== '-')
-                                <div style="color:#555; font-size:13px; margin-top:6px; font-weight:500;">{{ $ketua->name }}</div>
+                                <div class="org-name">{{ $ketua->name }}</div>
                                 @endif
                             </div>
-                            <div style="width:2px; height:30px; background:#c4992a; margin:0 auto;"></div>
 
-                            <!-- Divisi -->
-                            <div class="row" style="max-width: 900px; margin: 0 auto;">
+                            <!-- Connector line (gold) -->
+                            <div class="org-connector" style="background:#c4992a;"></div>
+
+                            <!-- Divisi Row (horizontal line & vertical branches via CSS) -->
+                            <div class="org-divisi-row">
                                 @foreach($divisi as $member)
-                                <div class="col-md-4 mb-3">
-                                    <div style="background:#e8f0eb; border:2px solid #1a4d2e; padding:20px 15px; border-radius:12px; text-align:center;">
-                                        <div class="org-photo-frame org-photo-sm" style="margin:0 auto 12px;">
+                                <div class="org-divisi-item">
+                                    <div class="org-divisi-stem"></div>
+                                    <div class="org-divisi-card">
+                                        <div class="org-photo-frame org-photo-mini" style="margin:0 auto 8px;">
                                             @if($member->photo)
                                             <img src="{{ asset('img/organisasi/' . $member->photo) }}" alt="{{ $member->name }}" style="object-position:{{ $member->photo_position ?? 'center' }}">
                                             @else
                                             <div class="org-photo-placeholder"><i class="fas fa-user-circle"></i></div>
                                             @endif
                                         </div>
-                                        <strong style="color:#1a4d2e; font-size:13px; display:block;">{{ $member->position }}</strong>
+                                        <strong class="org-divisi-title">{{ $member->position }}</strong>
                                         @if($member->name !== '-')
-                                        <small style="color:#555; font-size:12px;">{{ $member->name }}</small>
+                                        <small class="org-divisi-name">{{ $member->name }}</small>
                                         @endif
                                     </div>
                                 </div>
@@ -186,7 +191,96 @@
     </section>
 
 <style>
-/* Org Photo Frame - Rounded Rectangle with Gold Border */
+/* === Org Chart Layout === */
+.org-chart-wrapper {
+    text-align: center;
+    padding: 10px 0;
+}
+.org-chart-node {
+    display: inline-block;
+    margin-bottom: 4px;
+}
+.org-connector {
+    width: 2px;
+    height: 20px;
+    background: #1a4d2e;
+    margin: 0 auto;
+}
+.org-label {
+    padding: 8px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+    display: inline-block;
+}
+.org-label-primary { background: #1a4d2e; }
+.org-label-gold { background: #c4992a; }
+.org-name {
+    color: #555;
+    font-size: 12px;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* === Divisi Row === */
+.org-divisi-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-top: 2px;
+}
+/* Horizontal bar across top */
+.org-divisi-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 2px;
+    background: #1a4d2e;
+    left: calc(100% / 6);
+    right: calc(100% / 6);
+}
+
+.org-divisi-item {
+    flex: 1 1 200px;
+    max-width: 240px;
+    text-align: center;
+}
+/* Explicit vertical stem from horizontal bar to card */
+.org-divisi-stem {
+    width: 2px;
+    height: 14px;
+    background: #1a4d2e;
+    margin: 0 auto;
+}
+
+.org-divisi-card {
+    background: #e8f0eb;
+    border: 2px solid #1a4d2e;
+    padding: 16px 12px;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform .3s, box-shadow .3s;
+}
+.org-divisi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+}
+.org-divisi-title {
+    color: #1a4d2e;
+    font-size: 13px;
+    display: block;
+    line-height: 1.3;
+}
+.org-divisi-name {
+    color: #555;
+    font-size: 12px;
+}
+
+/* === Photo Frames === */
 .org-photo-frame {
     border: 3px solid #c4992a;
     border-radius: 16px;
@@ -205,13 +299,13 @@
     object-fit: cover;
     display: block;
 }
-.org-photo-lg {
-    width: 130px;
-    height: 160px;
+.org-photo-compact {
+    width: 90px;
+    height: 110px;
 }
-.org-photo-sm {
-    width: 100px;
-    height: 120px;
+.org-photo-mini {
+    width: 70px;
+    height: 85px;
 }
 .org-photo-placeholder {
     width: 100%;
@@ -222,8 +316,23 @@
     background: linear-gradient(135deg, #1a4d2e, #2d6b42);
 }
 .org-photo-placeholder i {
-    font-size: 40px;
+    font-size: 30px;
     color: rgba(255,255,255,.5);
+}
+.org-photo-mini .org-photo-placeholder i {
+    font-size: 24px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .org-divisi-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding-top: 0;
+    }
+    .org-divisi-row::before { display: none; }
+    .org-divisi-item::before { display: none; }
 }
 </style>
 

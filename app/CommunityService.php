@@ -11,6 +11,7 @@ class CommunityService extends Model
 
     public function getDateAttribute()
     {
-        return Carbon::parse($this->attributes['date'])->translatedFormat('d F Y');
+        $date = $this->attributes['date'] ?? $this->attributes['created_at'] ?? now();
+        return Carbon::parse($date)->translatedFormat('d F Y');
     }
 }
