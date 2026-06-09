@@ -61,6 +61,12 @@
                     <a href="{{ url('/admin/successlogin/kepakaran') }}" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Kepakaran</span>
                     </a>
+                    <a href="{{ url('/admin/successlogin/kelola-publikasi') }}" class="list-group-item list-group-item-action bg-dark text-white">
+                        <span class="menu-collapsed"><i class="fa fa-book mr-2"></i>Kelola Publikasi</span>
+                    </a>
+                    <a href="{{ url('/admin/successlogin/kelola-pelaksanaan') }}" class="list-group-item list-group-item-action bg-dark text-white">
+                        <span class="menu-collapsed"><i class="fa fa-tasks mr-2"></i>Kelola Pelaksanaan</span>
+                    </a>
                 </div>
                 <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-start align-items-center">

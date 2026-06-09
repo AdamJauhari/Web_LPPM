@@ -131,6 +131,37 @@ try {
     )");
     echo "[OK] Tabel journal_submissions\n";
 
+    // Publikasis table (Fitur Data Publikasi)
+    $pdo->exec("CREATE TABLE IF NOT EXISTS publikasis (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        judul VARCHAR(255) NOT NULL,
+        abstrak TEXT NOT NULL,
+        jenis_publikasi VARCHAR(50) NOT NULL,
+        kategori_reputasi VARCHAR(255) NOT NULL,
+        url_jurnal VARCHAR(255) NULL,
+        url_repository VARCHAR(255) NULL,
+        created_at TIMESTAMP NULL,
+        updated_at TIMESTAMP NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+    echo "[OK] Tabel publikasis\n";
+
+    // Pelaksanaans table (Fitur Data Pelaksanaan)
+    $pdo->exec("CREATE TABLE IF NOT EXISTS pelaksanaans (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        jenis_kegiatan VARCHAR(50) NOT NULL,
+        judul VARCHAR(255) NOT NULL,
+        deskripsi_singkat TEXT NOT NULL,
+        sumber_dana VARCHAR(255) NOT NULL,
+        url VARCHAR(255) NULL,
+        created_at TIMESTAMP NULL,
+        updated_at TIMESTAMP NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )");
+    echo "[OK] Tabel pelaksanaans\n";
+
     // Failed jobs table
     $pdo->exec("CREATE TABLE IF NOT EXISTS failed_jobs (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

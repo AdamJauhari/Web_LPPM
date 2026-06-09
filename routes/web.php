@@ -65,6 +65,30 @@ Route::get('/publikasi/download/{publications}', 'PublikasiController@getDownloa
 Route::put('/admin/successlogin/publikasi/{publications}', 'PublikasiController@update');
 Route::delete('/admin/successlogin/publikasi/{publications}', 'PublikasiController@destroy');
 
+// Admin Panel (Dashboard + Sidebar Index Pages)
+Route::get('/admin/successlogin', 'AdminController@successlogin');
+Route::get('/admin/successlogin/penelitian', 'AdminController@penelitian');
+Route::get('/admin/successlogin/pengabdian', 'AdminController@pengabdian');
+Route::get('/admin/successlogin/publikasi', 'AdminController@publikasi');
+Route::get('/admin/successlogin/kepakaran', 'AdminController@kepakaran');
+Route::get('/admin/logout', 'AdminController@logout');
+
+// Admin Kelola Publikasi (Data Publikasi Dosen)
+Route::get('/admin/successlogin/kelola-publikasi', 'AdminController@kelolaPublikasi');
+Route::get('/admin/successlogin/kelola-publikasi/create', 'AdminController@kelolaPublikasiCreate');
+Route::post('/admin/successlogin/kelola-publikasi', 'AdminController@kelolaPublikasiStore');
+Route::get('/admin/successlogin/kelola-publikasi/{id}/edit', 'AdminController@kelolaPublikasiEdit');
+Route::put('/admin/successlogin/kelola-publikasi/{id}', 'AdminController@kelolaPublikasiUpdate');
+Route::delete('/admin/successlogin/kelola-publikasi/{id}', 'AdminController@kelolaPublikasiDestroy');
+
+// Admin Kelola Pelaksanaan (Data Pelaksanaan Dosen)
+Route::get('/admin/successlogin/kelola-pelaksanaan', 'AdminController@kelolaPelaksanaan');
+Route::get('/admin/successlogin/kelola-pelaksanaan/create', 'AdminController@kelolaPelaksanaanCreate');
+Route::post('/admin/successlogin/kelola-pelaksanaan', 'AdminController@kelolaPelaksanaanStore');
+Route::get('/admin/successlogin/kelola-pelaksanaan/{id}/edit', 'AdminController@kelolaPelaksanaanEdit');
+Route::put('/admin/successlogin/kelola-pelaksanaan/{id}', 'AdminController@kelolaPelaksanaanUpdate');
+Route::delete('/admin/successlogin/kelola-pelaksanaan/{id}', 'AdminController@kelolaPelaksanaanDestroy');
+
 // User Login (Mahasiswa & Dosen)
 Route::get('/login', 'AdminController@index');
 Route::post('/login/checklogin', 'AdminController@checklogin');
@@ -78,6 +102,22 @@ Route::get('/ajukan-jurnal', 'SubmissionController@createJournal');
 Route::post('/ajukan-jurnal', 'SubmissionController@storeJournal');
 Route::get('/status-peninjauan', 'SubmissionController@statusPeninjauan');
 Route::get('/jurnal-saya', 'SubmissionController@jurnalSaya');
+
+// Data Publikasi (CRUD - Dosen & Admin)
+Route::get('/data-publikasi', 'DataPublikasiController@index');
+Route::get('/data-publikasi/create', 'DataPublikasiController@create');
+Route::post('/data-publikasi', 'DataPublikasiController@store');
+Route::get('/data-publikasi/{id}/edit', 'DataPublikasiController@edit');
+Route::put('/data-publikasi/{id}', 'DataPublikasiController@update');
+Route::delete('/data-publikasi/{id}', 'DataPublikasiController@destroy');
+
+// Data Pelaksanaan (CRUD - Dosen & Admin)
+Route::get('/data-pelaksanaan', 'PelaksanaanController@index');
+Route::get('/data-pelaksanaan/create', 'PelaksanaanController@create');
+Route::post('/data-pelaksanaan', 'PelaksanaanController@store');
+Route::get('/data-pelaksanaan/{id}/edit', 'PelaksanaanController@edit');
+Route::put('/data-pelaksanaan/{id}', 'PelaksanaanController@update');
+Route::delete('/data-pelaksanaan/{id}', 'PelaksanaanController@destroy');
 
 Route::get('/forkomil-dan-conferences', function () {
     return view('forkomil-dan-conferences');

@@ -69,6 +69,8 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/status-peninjauan') }}"><i class="fas fa-clipboard-check"></i> Status Peninjauan</a>
                                     <a class="dropdown-item" href="{{ url('/jurnal-saya') }}"><i class="fas fa-file-alt"></i> Jurnal Saya</a>
+                                    <a class="dropdown-item" href="{{ url('/data-publikasi') }}"><i class="fas fa-book-open"></i> Data Publikasi</a>
+                                    <a class="dropdown-item" href="{{ url('/data-pelaksanaan') }}"><i class="fas fa-clipboard-list"></i> Data Pelaksanaan</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/login/logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                                 </div>

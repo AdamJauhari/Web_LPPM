@@ -7,6 +7,8 @@ use App\Researche;
 use App\CommunityService;
 use App\Publication;
 use App\Expertise;
+use App\Publikasi;
+use App\Pelaksanaan;
 use App\User;
 use DB;
 use Carbon\Carbon;
@@ -216,6 +218,156 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // =============================================
+    // KELOLA PUBLIKASI (Admin CRUD)
+    // =============================================
+
+    public function kelolaPublikasi()
+    {
+        $publikasis = Publikasi::with('user')->orderBy('id', 'desc')->paginate(10);
+        $countJurnal = \DB::table('publikasis')->where('jenis_publikasi', 'Jurnal')->count();
+        $countProsiding = \DB::table('publikasis')->where('jenis_publikasi', 'Prosiding')->count();
+
+        return view('/admin/adm_kelola_publikasi', compact('publikasis', 'countJurnal', 'countProsiding'));
+    }
+
+    public function kelolaPublikasiCreate()
+    {
+        return view('/admin/kelola_publikasi_create');
+    }
+
+    public function kelolaPublikasiStore(Request $request)
+    {
+        $request->validate([
+            'judul'              => 'required|max:255',
+            'abstrak'            => 'required',
+            'jenis_publikasi'    => 'required|in:Jurnal,Prosiding',
+            'kategori_reputasi'  => 'required|max:255',
+            'url_jurnal'         => 'nullable|url|max:255',
+            'url_repository'     => 'nullable|url|max:255',
+        ]);
+
+        Publikasi::create([
+            'user_id'            => Auth::id(),
+            'judul'              => $request->judul,
+            'abstrak'            => $request->abstrak,
+            'jenis_publikasi'    => $request->jenis_publikasi,
+            'kategori_reputasi'  => $request->kategori_reputasi,
+            'url_jurnal'         => $request->url_jurnal,
+            'url_repository'     => $request->url_repository,
+        ]);
+
+        return redirect('/admin/successlogin/kelola-publikasi')->with('status', 'Data Publikasi Berhasil Ditambahkan!');
+    }
+
+    public function kelolaPublikasiEdit($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        return view('/admin/kelola_publikasi_edit', compact('publikasi'));
+    }
+
+    public function kelolaPublikasiUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'judul'              => 'required|max:255',
+            'abstrak'            => 'required',
+            'jenis_publikasi'    => 'required|in:Jurnal,Prosiding',
+            'kategori_reputasi'  => 'required|max:255',
+            'url_jurnal'         => 'nullable|url|max:255',
+            'url_repository'     => 'nullable|url|max:255',
+        ]);
+
+        Publikasi::where('id', $id)->update([
+            'judul'              => $request->judul,
+            'abstrak'            => $request->abstrak,
+            'jenis_publikasi'    => $request->jenis_publikasi,
+            'kategori_reputasi'  => $request->kategori_reputasi,
+            'url_jurnal'         => $request->url_jurnal,
+            'url_repository'     => $request->url_repository,
+        ]);
+
+        return redirect('/admin/successlogin/kelola-publikasi')->with('status', 'Data Publikasi Berhasil Diubah!');
+    }
+
+    public function kelolaPublikasiDestroy($id)
+    {
+        Publikasi::find($id)->delete();
+        return redirect('/admin/successlogin/kelola-publikasi')->with('status', 'Data Publikasi Berhasil Dihapus!');
+    }
+
+    // =============================================
+    // KELOLA PELAKSANAAN (Admin CRUD)
+    // =============================================
+
+    public function kelolaPelaksanaan()
+    {
+        $pelaksanaans = Pelaksanaan::with('user')->orderBy('id', 'desc')->paginate(10);
+        $countPenelitian = \DB::table('pelaksanaans')->where('jenis_kegiatan', 'Penelitian')->count();
+        $countPengabdian = \DB::table('pelaksanaans')->where('jenis_kegiatan', 'Pengabdian')->count();
+
+        return view('/admin/adm_kelola_pelaksanaan', compact('pelaksanaans', 'countPenelitian', 'countPengabdian'));
+    }
+
+    public function kelolaPelaksanaanCreate()
+    {
+        return view('/admin/kelola_pelaksanaan_create');
+    }
+
+    public function kelolaPelaksanaanStore(Request $request)
+    {
+        $request->validate([
+            'jenis_kegiatan'    => 'required|in:Penelitian,Pengabdian',
+            'judul'             => 'required|max:255',
+            'deskripsi_singkat' => 'required',
+            'sumber_dana'       => 'required|max:255',
+            'url'               => 'nullable|url|max:255',
+        ]);
+
+        Pelaksanaan::create([
+            'user_id'           => Auth::id(),
+            'jenis_kegiatan'    => $request->jenis_kegiatan,
+            'judul'             => $request->judul,
+            'deskripsi_singkat' => $request->deskripsi_singkat,
+            'sumber_dana'       => $request->sumber_dana,
+            'url'               => $request->url,
+        ]);
+
+        return redirect('/admin/successlogin/kelola-pelaksanaan')->with('status', 'Data Pelaksanaan Berhasil Ditambahkan!');
+    }
+
+    public function kelolaPelaksanaanEdit($id)
+    {
+        $pelaksanaan = Pelaksanaan::findOrFail($id);
+        return view('/admin/kelola_pelaksanaan_edit', compact('pelaksanaan'));
+    }
+
+    public function kelolaPelaksanaanUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'jenis_kegiatan'    => 'required|in:Penelitian,Pengabdian',
+            'judul'             => 'required|max:255',
+            'deskripsi_singkat' => 'required',
+            'sumber_dana'       => 'required|max:255',
+            'url'               => 'nullable|url|max:255',
+        ]);
+
+        Pelaksanaan::where('id', $id)->update([
+            'jenis_kegiatan'    => $request->jenis_kegiatan,
+            'judul'             => $request->judul,
+            'deskripsi_singkat' => $request->deskripsi_singkat,
+            'sumber_dana'       => $request->sumber_dana,
+            'url'               => $request->url,
+        ]);
+
+        return redirect('/admin/successlogin/kelola-pelaksanaan')->with('status', 'Data Pelaksanaan Berhasil Diubah!');
+    }
+
+    public function kelolaPelaksanaanDestroy($id)
+    {
+        Pelaksanaan::find($id)->delete();
+        return redirect('/admin/successlogin/kelola-pelaksanaan')->with('status', 'Data Pelaksanaan Berhasil Dihapus!');
     }
 
 }

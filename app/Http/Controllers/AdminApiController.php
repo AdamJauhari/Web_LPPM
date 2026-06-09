@@ -93,6 +93,8 @@ class AdminApiController extends Controller
             'users' => DB::table('users')->count(),
             'ajuan_proposal' => DB::table('research_submissions')->count(),
             'ajuan_jurnal' => DB::table('journal_submissions')->count(),
+            'data_publikasi' => DB::table('publikasis')->count(),
+            'data_pelaksanaan' => DB::table('pelaksanaans')->count(),
         ]);
     }
 
@@ -105,7 +107,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members'];
+        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -135,7 +137,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members'];
+        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -156,7 +158,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members'];
+        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -192,7 +194,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members'];
+        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -227,7 +229,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members'];
+        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
