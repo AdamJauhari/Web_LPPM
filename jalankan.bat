@@ -47,6 +47,8 @@ if not exist database\database.sqlite (
     echo [4/5] Membuat database SQLite...
     type nul > database\database.sqlite
     %PHP% setup_db.php
+    %PHP% setup_org.php
+    %PHP% setup_admin.php
 ) else (
     echo [4/5] Database SQLite sudah ada. Melewati...
 )
