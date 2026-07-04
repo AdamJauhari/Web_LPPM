@@ -43,6 +43,9 @@ if not exist .env (
 
 :: [4/5] Setup database SQLite
 echo [4/5] Memeriksa database SQLite...
+if not exist database (
+    mkdir database
+)
 if not exist database\database.sqlite (
     echo [4/5] Membuat database SQLite...
     type nul > database\database.sqlite
