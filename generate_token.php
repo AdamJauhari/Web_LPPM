@@ -11,13 +11,18 @@ for ($i = 0; $i < 12; $i++) {
 }
 
 $tokenFile = __DIR__ . '/storage/app/admin_token.txt';
+$tokenFile2 = __DIR__ . '/admin_electron/admin_token.txt';
 
 // Pastikan directory ada
 if (!is_dir(dirname($tokenFile))) {
     mkdir(dirname($tokenFile), 0755, true);
 }
+if (!is_dir(dirname($tokenFile2))) {
+    mkdir(dirname($tokenFile2), 0755, true);
+}
 
 file_put_contents($tokenFile, $token);
+file_put_contents($tokenFile2, $token);
 
 echo "===================================================\n";
 echo "  ADMIN TOKEN BERHASIL DIGENERATE\n";

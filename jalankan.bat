@@ -49,13 +49,19 @@ if not exist database (
 if not exist database\database.sqlite (
     echo [4/5] Membuat database SQLite...
     type nul > database\database.sqlite
-    %PHP% setup_db.php
-    %PHP% setup_org.php
-    %PHP% setup_admin.php
-) else (
-    echo [4/5] Database SQLite sudah ada. Melewati...
 )
+
+echo [4/5] Menginisiasi struktur tabel...
+%PHP% setup_db.php
+%PHP% setup_org.php
+%PHP% setup_admin.php
 echo [4/5] Database siap!
+
+:: Cek token admin panel
+if not exist storage\app\admin_token.txt (
+    echo Menghasilkan token admin panel...
+    %PHP% generate_token.php
+)
 
 :: [5/5] Buka Browser dan jalankan server
 echo [5/5] Membuka browser ke http://127.0.0.1:8000 ...
