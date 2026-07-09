@@ -1,7 +1,16 @@
-@extends('layout/publikasi')
+@extends('layout/main')
 
 @section('container')
-    <div class="col-lg-8 posts-list">
+    <section class="hero-banner d-flex align-items-center">
+        <div class="container text-center">
+            <h2>Publikasi Penelitian</h2>
+        </div>
+    </section>
+
+    <section class="blog_area single-post-area area-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 posts-list">
         <div class="single-post">
             <div class="feature-img">
                 <img class="img-fluid" src="img/blog/main-blog/m-blog-1.jpg" alt="">
@@ -9,10 +18,21 @@
             <div class="blog_details">
                 <h2>{{ $publications->title }}</h2>
                 <ul class="blog-info-link mt-3 mb-4">
-                    <li><i class="far fa-user"></i> {{ $publications->author }}</li>
+                    <li><i class="far fa-user"></i> {{ $publications->author ?: 'Tidak ada informasi penulis' }}</li>
                     <li><i class="far fa-calendar"></i> {{ $publications->date }}</li>
                 </ul>
-                <p class="excert">{{ $publications->abstract }}</p>
+                <div style="background:#f8f9fa; padding:20px; border-radius:8px; border-left:4px solid #1a4d2e; margin-bottom:20px;">
+                    <h5 style="color:#1a4d2e; margin-bottom:15px; font-size:16px;">Abstrak</h5>
+                    <p class="excert" style="text-align:justify;">{{ $publications->abstract ?: 'Tidak ada abstrak yang tersedia untuk publikasi ini.' }}</p>
+                </div>
+                
+                @if ($publications->file)
+                <div style="margin-top: 30px;">
+                    <a href="/download/publikasi/{{ $publications->file }}" style="display:inline-flex; align-items:center; gap:8px; background:#1a4d2e; color:#fff; padding:12px 24px; border-radius:6px; font-weight:600; text-decoration:none; transition:.2s;" onmouseover="this.style.background='#2d6b42'" onmouseout="this.style.background='#1a4d2e'">
+                        <i class="fas fa-file-download" style="font-size:18px;"></i> Download File Publikasi
+                    </a>
+                </div>
+                @endif
             </div>
         </div>
 
@@ -171,64 +191,10 @@
                 </ul>
             </aside>
 
-            <aside class="single_sidebar_widget popular_post_widget">
-                <h4 class="widget_title">e-Jurnal Universitas Cendekia Abditama</h4>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post1.jpg" alt="post"> -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/kurawal">
-                            <h5>Kurawal - Jurnal Teknologi, Informasi dan Industri</h5>
-                        </a>
-                        <!-- <p>2020-03-10</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/parsimonia">
-                            <h5>Parsimonia - Jurnal Ekonomi dan Bisnis</h5>
-                        </a>
-                        <!-- <p>2018-08-12</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://ejournal.mrcpp.machung.ac.id/index.php/ijnp">
-                            <h5>IJNP - Indonesian Journal of Natural Pigments</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/klausa">
-                            <h5>KLAUSA (Kajian Linguistik, Pembelajaran Bahasa, dan Sastra)</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/citradirga">
-                            <h5>Citradirga - Jurnal Desain Komunikasi Visual dan Intermedia</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jacips.machung.ac.id/">
-                            <h5>JACIPS - Journal of Community Practice and Social Welfare</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-            </aside>
+            
         </div>
     </div>
-        
+            </div>
+        </div>
+    </section>
 @endsection

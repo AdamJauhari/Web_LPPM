@@ -243,63 +243,7 @@
                 </ul>
             </aside>
 
-            <aside class="single_sidebar_widget popular_post_widget">
-                <h4 class="widget_title">e-Jurnal Universitas Cendekia Abditama</h4>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post1.jpg" alt="post"> -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/kurawal">
-                            <h5>Kurawal - Jurnal Teknologi, Informasi dan Industri</h5>
-                        </a>
-                        <!-- <p>2020-03-10</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/parsimonia">
-                            <h5>Parsimonia - Jurnal Ekonomi dan Bisnis</h5>
-                        </a>
-                        <!-- <p>2018-08-12</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/magna">
-                            <h5>Magna - Jurnal Management and Accounting</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/klausa">
-                            <h5>KLAUSA (Kajian Linguistik, Pembelajaran Bahasa, dan Sastra)</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jurnal.machung.ac.id/index.php/citradirga">
-                            <h5>Citradirga - Jurnal Desain Komunikasi Visual dan Intermedia</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-                <div class="media post_item">
-                    <!-- <img src="img/blog/popular-post/post2.jpg" alt="post">                               -->
-                    <div class="media-body">
-                        <a href="https://jacips.machung.ac.id/">
-                            <h5>JACIPS - Journal of Community Practice and Social Welfare</h5>
-                        </a>
-                        <!-- <p>2019-11-04</p> -->
-                    </div>
-                </div>
-            </aside>
+            
         </div>
     </div>
         

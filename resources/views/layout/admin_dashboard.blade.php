@@ -41,46 +41,76 @@
     <div class="row" id="body-row">
         <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
             <ul class="list-group">
-                <a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+
+                {{-- ===== KONTEN BERITA (Admin LPPM saja) ===== --}}
+                @if(Auth::user()->isAdminLppm())
+                <a href="#submenu-berita" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-start align-items-center">
-                        <span class="fa fa-dashboard fa-fw mr-3"></span>
-                        <span class="menu-collapsed">Dashboard</span>
+                        <span class="fa fa-newspaper-o fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Konten Berita</span>
                         <span class="submenu-icon ml-auto"></span>
                     </div>
                 </a>
-                <div id='submenu1' class="collapse sidebar-submenu">
+                <div id='submenu-berita' class="collapse sidebar-submenu">
                     <a href="{{ url('/admin/successlogin/penelitian') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Penelitian</span>
+                        <span class="menu-collapsed"><i class="fa fa-flask mr-2"></i>Penelitian</span>
                     </a>
                     <a href="{{ url('/admin/successlogin/pengabdian') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Pengabdian</span>
+                        <span class="menu-collapsed"><i class="fa fa-users mr-2"></i>Pengabdian</span>
                     </a>
                     <a href="{{ url('/admin/successlogin/publikasi') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Publikasi</span>
+                        <span class="menu-collapsed"><i class="fa fa-book mr-2"></i>Publikasi</span>
                     </a>
                     <a href="{{ url('/admin/successlogin/kepakaran') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Kepakaran</span>
+                        <span class="menu-collapsed"><i class="fa fa-star mr-2"></i>Kepakaran</span>
                     </a>
                     <a href="{{ url('/admin/successlogin/kelola-publikasi') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed"><i class="fa fa-book mr-2"></i>Kelola Publikasi</span>
+                        <span class="menu-collapsed"><i class="fa fa-file-text mr-2"></i>Kelola Publikasi</span>
                     </a>
                     <a href="{{ url('/admin/successlogin/kelola-pelaksanaan') }}" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed"><i class="fa fa-tasks mr-2"></i>Kelola Pelaksanaan</span>
                     </a>
                 </div>
-                <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                @endif
+
+                {{-- ===== KELOLA PENGAJUAN (semua admin) ===== --}}
+                <a href="{{ url('/admin/successlogin/approval') }}" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-start align-items-center">
-                        <span class="fa fa-user fa-fw mr-3"></span>
-                        <span class="menu-collapsed">Profile</span>
+                        <span class="fa fa-check-square-o fa-fw mr-3"></span>
+                        <span class="menu-collapsed">Kelola Pengajuan</span>
+                    </div>
+                </a>
+
+                {{-- ===== KELOLA USER (semua admin) ===== --}}
+                <a href="{{ url('/admin/successlogin/kelola-user') }}" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-users fa-fw mr-3"></span>
+                        <span class="menu-collapsed">
+                            @if(Auth::user()->isAdminLppm()) Kelola User @else Dosen Saya @endif
+                        </span>
+                    </div>
+                </a>
+
+                {{-- ===== PROFIL & LOGOUT ===== --}}
+                <a href="#submenu-profile" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-user-circle fa-fw mr-3"></span>
+                        <span class="menu-collapsed">{{ Auth::user()->name }}</span>
                         <span class="submenu-icon ml-auto"></span>
                     </div>
                 </a>
-                <div id='submenu2' class="collapse sidebar-submenu">
+                <div id='submenu-profile' class="collapse sidebar-submenu">
+                    <div class="list-group-item bg-dark text-white-50 small">
+                        <i class="fa fa-tag mr-1"></i>
+                        @if(Auth::user()->isAdminLppm()) Admin LPPM
+                        @elseif(Auth::user()->isAdminUppm()) Admin UPPM — {{ Auth::user()->fakultas }}
+                        @else Dosen @endif
+                    </div>
                     <a href="{{ url('/admin/logout') }}" class="list-group-item list-group-item-action bg-dark text-white">
-                        <span class="menu-collapsed">Logout <i class="fa fa-sign-out"></i></span>
+                        <span class="menu-collapsed"><i class="fa fa-sign-out mr-2"></i>Logout</span>
                     </a>
-                </div>            
-               
+                </div>
+
             </ul>
         </div> <!-- End Sidebar -->
 

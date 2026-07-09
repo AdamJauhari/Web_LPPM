@@ -35,22 +35,31 @@ class AdminController extends Controller
         ];
 
         $this->validate($request, [
-            'email'     =>  'required|email',
-            'password'  =>  'required|alphaNum'
+            'email'     => 'required|email',
+            'password'  => 'required',
         ]);
 
         $user_data = array(
-            'email'     =>  $request->get('email'),
-            'password'  =>  $request->get('password')
+            'email'     => $request->get('email'),
+            'password'  => $request->get('password')
         );
 
         if(Auth::attempt($user_data))
         {
-            return redirect('login/successlogin');
+            $role = Auth::user()->role;
+
+            // Dosen diarahkan ke portal dosen
+            if ($role === 'dosen') {
+                return redirect('/dosen/luaran-sinta');
+            }
+
+            // Jika Admin LPPM/UPPM login via web, beri tahu untuk pakai panel mandiri
+            Auth::logout();
+            return back()->with('error', 'Admin harap login melalui Panel Admin Mandiri (Token).');
         }
-        else 
+        else
         {
-            return back()->with('error', 'Wrong Email or Password!');
+            return back()->with('error', 'Email atau password salah!');
         }
     }
 

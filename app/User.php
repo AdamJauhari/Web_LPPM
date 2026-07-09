@@ -17,6 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'role', 'nim_nip',
+        'nidn', 'fakultas', 'jabatan_fungsional',
     ];
 
     /**
@@ -36,4 +37,42 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // =========================================================
+    // Helper methods untuk cek role
+    // =========================================================
+
+    /** Apakah user ini Admin LPPM (Pusat)? */
+    public function isAdminLppm(): bool
+    {
+        return $this->role === 'admin_lppm';
+    }
+
+    /** Apakah user ini Admin UPPM (Fakultas)? */
+    public function isAdminUppm(): bool
+    {
+        return $this->role === 'admin_uppm';
+    }
+
+    /** Apakah user ini Dosen? */
+    public function isDosen(): bool
+    {
+        return $this->role === 'dosen';
+    }
+
+    /** Apakah user ini admin level manapun (lppm atau uppm)? */
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, ['admin_lppm', 'admin_uppm']);
+    }
+
+    // =========================================================
+    // Relasi
+    // =========================================================
+
+    /** Luaran publikasi milik dosen ini */
+    public function publikasis()
+    {
+        return $this->hasMany(Publikasi::class);
+    }
 }

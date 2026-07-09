@@ -8,12 +8,14 @@ let editingId = null;
 const TABLE_CONFIG = {
     researches:            { label:'Penelitian', icon:'fa-flask',         fields:['title','body','thumbnail'], colors:'#1a4d2e' },
     community_services:    { label:'Pengabdian', icon:'fa-hands-helping', fields:['title','body','thumbnail'], colors:'#2d6b42' },
-    publications:          { label:'Publikasi',  icon:'fa-file-alt',      fields:['title','body','file'],      colors:'#c4992a' },
+    publications:          { label:'Publikasi',  icon:'fa-file-alt',      fields:['title','author','date','abstract','file'],      colors:'#c4992a' },
     organization_members:  { label:'Struktur Organisasi', icon:'fa-sitemap', fields:['position','name','photo','photo_position','sort_order'], colors:'#0d2b1a' },
     users:                 { label:'Users',      icon:'fa-users',         fields:['name','email','password','role','nim_nip'],  colors:'#6b4c1a' },
     publikasis:            { label:'Data Publikasi', icon:'fa-book',      fields:['user_id','judul','abstrak','jenis_publikasi','kategori_reputasi','url_jurnal','url_repository'], colors:'#1a6b3a' },
     pelaksanaans:          { label:'Data Pelaksanaan', icon:'fa-tasks',   fields:['user_id','judul','deskripsi_singkat','jenis_kegiatan','sumber_dana','url'], colors:'#4a6b1a' },
-    research_submissions:  { label:'Ajuan Proposal', icon:'fa-paper-plane', fields:['status','admin_notes'], colors:'#2d6b42', reviewOnly:true },
+    research_submissions:  { label:'Ajuan Proposal', icon:'fa-paper-plane', fields:['status','admin_notes','rejection_reason'], colors:'#2d6b42', reviewOnly:true },
+    pkm_submissions:       { label:'Ajuan PKM',      icon:'fa-hands-helping', fields:['status','admin_notes','rejection_reason'], colors:'#1a4d2e', reviewOnly:true },
+    hki_submissions:       { label:'Ajuan HKI',      icon:'fa-certificate', fields:['status','admin_notes','rejection_reason'], colors:'#0d2b1a', reviewOnly:true },
     journal_submissions:   { label:'Ajuan Jurnal',   icon:'fa-journal-whills', fields:['status','admin_notes'], colors:'#c4992a', reviewOnly:true }
 };
 
@@ -77,6 +79,8 @@ async function loadDashboard() {
             { key:'data_publikasi', label:'Data Publikasi', icon:'fa-book', color:'#1a6b3a' },
             { key:'data_pelaksanaan', label:'Data Pelaksanaan', icon:'fa-tasks', color:'#4a6b1a' },
             { key:'ajuan_proposal', label:'Ajuan Proposal', icon:'fa-paper-plane', color:'#2d6b42' },
+            { key:'ajuan_pkm', label:'Ajuan PKM', icon:'fa-hands-helping', color:'#1a4d2e' },
+            { key:'ajuan_hki', label:'Ajuan HKI', icon:'fa-certificate', color:'#0d2b1a' },
             { key:'ajuan_jurnal',   label:'Ajuan Jurnal',   icon:'fa-journal-whills', color:'#c4992a' }
         ];
         grid.innerHTML = items.map(i => `
@@ -154,7 +158,8 @@ function getFieldLabel(f) {
         'kategori_reputasi':'Kategori Reputasi', 'url_jurnal':'URL Jurnal/Prosiding',
         'url_repository':'URL Repository', 'jenis_kegiatan':'Jenis Kegiatan',
         'deskripsi_singkat':'Deskripsi Singkat', 'sumber_dana':'Sumber Dana',
-        'url':'URL Laporan/Bukti', 'user_id':'User ID'
+        'url':'URL Laporan/Bukti', 'user_id':'User ID', 'rejection_reason':'Alasan Penolakan',
+        'author':'Penulis', 'date':'Tanggal', 'title':'Judul', 'body':'Deskripsi'
     };
     return labels[f] || f.charAt(0).toUpperCase() + f.slice(1);
 }
@@ -164,10 +169,17 @@ function renderField(f, value) {
     const val = value || '';
     const valAttr = val.toString().replace(/"/g, '&quot;');
 
-    if (f === 'body' || f === 'abstract' || f === 'admin_notes' || f === 'abstrak' || f === 'deskripsi_singkat')
+    if (f === 'body' || f === 'abstract' || f === 'admin_notes' || f === 'abstrak' || f === 'deskripsi_singkat' || f === 'rejection_reason')
         return `<textarea id="field-${f}">${val}</textarea>`;
     if (f === 'photo')
         return `${val ? `<div style="margin-bottom:8px"><img src="${API_URL}/img/organisasi/${val}" style="width:80px;height:100px;border-radius:12px;object-fit:cover;border:3px solid #c4992a"><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept="image/*" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti foto</small>' : ''}`;
+    if (f === 'thumbnail') {
+        const p = currentSection === 'community_services' ? 'pengabdian' : 'penelitian';
+        return `${val ? `<div style="margin-bottom:8px"><img src="${API_URL}/img/${p}/${val}" style="width:150px;height:auto;border-radius:6px;border:1px solid #ccc"><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept="image/*" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti thumbnail</small>' : ''}`;
+    }
+    if (f === 'file') {
+        return `${val ? `<div style="margin-bottom:8px"><a href="${API_URL}/download/publikasi/${val}" target="_blank" class="badge btn-success" style="padding:4px 8px;border-radius:4px;background:#2d6b42;color:#fff;text-decoration:none"><i class="fas fa-download"></i> Download File</a><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept=".pdf,.doc,.docx,.zip,.rar" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti file</small>' : ''}`;
+    }
     if (f === 'photo_position')
         return `<select id="field-${f}" style="${selStyle}"><option value="top" ${val==='top'?'selected':''}>Atas (Wajah)</option><option value="center" ${(!val||val==='center')?'selected':''}>Tengah</option><option value="bottom" ${val==='bottom'?'selected':''}>Bawah</option><option value="20% 20%" ${val==='20% 20%'?'selected':''}>Kiri Atas</option><option value="80% 20%" ${val==='80% 20%'?'selected':''}>Kanan Atas</option></select>`;
     if (f === 'role')
@@ -182,6 +194,8 @@ function renderField(f, value) {
         return `<select id="field-${f}" style="${selStyle}"><option value="">-- Pilih --</option><option value="Penelitian" ${val==='Penelitian'?'selected':''}>Penelitian</option><option value="Pengabdian" ${val==='Pengabdian'?'selected':''}>Pengabdian</option></select>`;
     if (f === 'sumber_dana')
         return `<select id="field-${f}" style="${selStyle}"><option value="">-- Pilih --</option><option value="Internasional" ${val==='Internasional'?'selected':''}>Internasional</option><option value="Nasional (Dikti/Saintek)" ${val==='Nasional (Dikti/Saintek)'?'selected':''}>Nasional (Dikti/Saintek)</option><option value="Nasional (Kemenag)" ${val==='Nasional (Kemenag)'?'selected':''}>Nasional (Kemenag)</option><option value="Internal" ${val==='Internal'?'selected':''}>Internal</option><option value="Mitra" ${val==='Mitra'?'selected':''}>Mitra</option></select>`;
+    if (f === 'date')
+        return `<input type="date" id="field-${f}" value="${valAttr}" style="${selStyle}">`;
     return `<input type="${f==='password'?'password':'text'}" id="field-${f}" value="${f==='password'?'':valAttr}" placeholder="${f==='nim_nip'?'Contoh: 2322105018':f==='sort_order'?'Angka urutan (1,2,3,...)':f==='user_id'?'ID user pemilik data':''}">`;
 }
 
@@ -221,13 +235,30 @@ async function openEditModal(id) {
     let html = '';
     // For review-only sections, show submission info as read-only first
     if (cfg.reviewOnly) {
-        const infoFields = currentSection === 'research_submissions'
-            ? ['title','research_type','abstract','team_members']
-            : ['title','journal_name','abstract','authors'];
+        let infoFields = [];
+        if (currentSection === 'research_submissions') {
+            infoFields = ['title','research_type','abstract','team_members'];
+        } else if (currentSection === 'pkm_submissions') {
+            infoFields = ['judul','sumber_dana','abstrak','team_members'];
+        } else if (currentSection === 'hki_submissions') {
+            infoFields = ['judul','jenis_hki','abstrak','team_members'];
+        } else {
+            infoFields = ['title','journal_name','abstract','authors'];
+        }
+        
         html += '<div style="background:#f8f9fa;border-radius:8px;padding:14px;margin-bottom:16px;border-left:4px solid #1a4d2e">';
         html += '<strong style="color:#1a4d2e;font-size:12px;text-transform:uppercase">Detail Ajuan</strong>';
         infoFields.forEach(f => {
-            const label = f === 'research_type' ? 'Jenis' : f === 'team_members' ? 'Anggota Tim' : f === 'journal_name' ? 'Jurnal Tujuan' : f === 'authors' ? 'Penulis' : f.charAt(0).toUpperCase() + f.slice(1);
+            let label = f.charAt(0).toUpperCase() + f.slice(1);
+            if (f === 'research_type') label = 'Jenis';
+            if (f === 'team_members') label = 'Anggota Tim';
+            if (f === 'journal_name') label = 'Jurnal Tujuan';
+            if (f === 'authors') label = 'Penulis';
+            if (f === 'judul') label = 'Judul';
+            if (f === 'sumber_dana') label = 'Sumber Dana';
+            if (f === 'jenis_hki') label = 'Jenis HKI';
+            if (f === 'abstrak') label = 'Abstrak';
+            
             html += `<div style="margin-top:8px"><small style="color:#888">${label}</small><div style="font-size:13px;color:#333">${data[f] || '-'}</div></div>`;
         });
         html += '</div><hr style="border-color:#eee">';
@@ -255,35 +286,41 @@ async function saveData() {
     const cfg = TABLE_CONFIG[currentSection];
     
     // Check if there's a file upload field
-    const photoField = document.getElementById('field-photo');
-    const hasFileUpload = photoField && photoField.type === 'file' && photoField.files.length > 0;
-    
-    if (hasFileUpload) {
-        // Upload photo first
-        const formData = new FormData();
-        formData.append('photo', photoField.files[0]);
-        try {
-            const uploadRes = await fetch(API_URL + '/api/admin/upload-photo', {
-                method: 'POST',
-                headers: { 'X-Admin-Token': TOKEN },
-                body: formData
-            });
-            const uploadData = await uploadRes.json();
-            if (uploadData.filename) {
-                // Set a hidden value for photo field
-                photoField.dataset.uploadedFile = uploadData.filename;
-            } else {
-                alert('Gagal upload foto: ' + (uploadData.error || 'Unknown'));
-                return;
+    const fileFields = ['photo', 'thumbnail', 'file'];
+    for (let fName of fileFields) {
+        const fileField = document.getElementById(`field-${fName}`);
+        if (fileField && fileField.type === 'file' && fileField.files.length > 0) {
+            const formData = new FormData();
+            formData.append(fName === 'photo' ? 'photo' : 'file', fileField.files[0]);
+            
+            let uploadUrl = API_URL + '/api/admin/upload-photo';
+            if (fName !== 'photo') {
+                formData.append('type', currentSection === 'community_services' ? 'pengabdian' : (currentSection === 'publications' ? 'publikasi' : 'penelitian'));
+                uploadUrl = API_URL + '/api/admin/upload-file';
             }
-        } catch(e) { alert('Gagal upload foto'); return; }
+
+            try {
+                const uploadRes = await fetch(uploadUrl, {
+                    method: 'POST',
+                    headers: { 'X-Admin-Token': TOKEN },
+                    body: formData
+                });
+                const uploadData = await uploadRes.json();
+                if (uploadData.filename) {
+                    fileField.dataset.uploadedFile = uploadData.filename;
+                } else {
+                    alert(`Gagal upload ${fName}: ` + (uploadData.error || 'Unknown'));
+                    return;
+                }
+            } catch(e) { alert(`Gagal upload ${fName}`); return; }
+        }
     }
     
     const body = {};
     cfg.fields.forEach(f => {
         const el = document.getElementById('field-'+f);
         if (!el) return;
-        if (f === 'photo') {
+        if (fileFields.includes(f)) {
             // Use uploaded filename if available
             if (el.dataset && el.dataset.uploadedFile) body[f] = el.dataset.uploadedFile;
         } else if (el.value) {

@@ -131,7 +131,7 @@ Route::get('/hakcipta', function () {
     return view('hakcipta');
 });
 
-Route::get('/download', function () {
+    Route::get('/download', function () {
     return view('download');
 });
 
@@ -154,9 +154,67 @@ Route::prefix('api/admin')->group(function () {
     Route::post('/verify', 'AdminApiController@verify');
     Route::get('/stats', 'AdminApiController@stats');
     Route::post('/upload-photo', 'AdminApiController@uploadPhoto');
+    Route::post('/upload-file', 'AdminApiController@uploadFile');
     Route::get('/list/{table}', 'AdminApiController@list');
     Route::get('/show/{table}/{id}', 'AdminApiController@show');
     Route::post('/store/{table}', 'AdminApiController@store');
     Route::put('/update/{table}/{id}', 'AdminApiController@update');
     Route::delete('/delete/{table}/{id}', 'AdminApiController@destroy');
 });
+
+// =====================================================
+// REGISTRASI DOSEN
+// =====================================================
+Route::get('/daftar-dosen', 'Auth\RegisterDosenController@showForm');
+Route::post('/daftar-dosen', 'Auth\RegisterDosenController@register');
+
+// =====================================================
+// DOSEN DASHBOARD (redirect ke portal dosen)
+// =====================================================
+Route::get('/dosen/dashboard', function () {
+    if (!Auth::check()) return redirect('/login');
+    return redirect('/dosen/luaran-sinta');
+})->middleware('auth');
+
+// =====================================================
+// DOSEN — LUARAN SINTA (Manual Input)
+// =====================================================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dosen/luaran-sinta',                  'Dosen\LuaranSintaController@index');
+    Route::get('/dosen/luaran-sinta/create',           'Dosen\LuaranSintaController@create');
+    Route::post('/dosen/luaran-sinta',                 'Dosen\LuaranSintaController@store');
+    Route::get('/dosen/luaran-sinta/{id}/edit',        'Dosen\LuaranSintaController@edit');
+    Route::put('/dosen/luaran-sinta/{id}',             'Dosen\LuaranSintaController@update');
+    Route::delete('/dosen/luaran-sinta/{id}',          'Dosen\LuaranSintaController@destroy');
+});
+
+// =====================================================
+// DOSEN — PENGAJUAN PENELITIAN
+// =====================================================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dosen/penelitian',         'Dosen\PenelitianSubmissionController@index');
+    Route::get('/dosen/penelitian/create',  'Dosen\PenelitianSubmissionController@create');
+    Route::post('/dosen/penelitian',        'Dosen\PenelitianSubmissionController@store');
+});
+
+// =====================================================
+// DOSEN — PENGAJUAN PKM
+// =====================================================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dosen/pkm',         'Dosen\PkmSubmissionController@index');
+    Route::get('/dosen/pkm/create',  'Dosen\PkmSubmissionController@create');
+    Route::post('/dosen/pkm',        'Dosen\PkmSubmissionController@store');
+});
+
+// =====================================================
+// DOSEN — PENGAJUAN HKI
+// =====================================================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dosen/hki',         'Dosen\HkiSubmissionController@index');
+    Route::get('/dosen/hki/create',  'Dosen\HkiSubmissionController@create');
+    Route::post('/dosen/hki',        'Dosen\HkiSubmissionController@store');
+});
+
+
+
+

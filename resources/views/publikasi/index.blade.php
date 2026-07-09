@@ -26,13 +26,19 @@
                     <td>{{ $publication->title }}</td>
                     <td>{{ $publication->author }}</td>
                     <td>{{ $publication->date }}</td>
-                    <td>{{ $publication->abstract }}</td>
+                    <td>{{ \Illuminate\Support\Str::limit($publication->abstract, 50) }}</td>
                     <td>
-                    <a href="/publikasi/{{ $publication->slug }}" class="badge btn-info">detail</a> <br>
-                    @if ($publication->file)
-                        <a href="/download/publikasi/{{ $publication->file }}" class="badge btn-success">download</a></td>
-                    
-                    @endif
+                        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                            <a href="/publikasi/{{ $publication->slug }}" style="display:inline-flex; align-items:center; gap:4px; background:#17a2b8; color:#fff; padding:6px 12px; border-radius:4px; font-size:12px; text-decoration:none;">
+                                <i class="fas fa-info-circle"></i> Detail
+                            </a>
+                            @if ($publication->file)
+                            <a href="/download/publikasi/{{ $publication->file }}" style="display:inline-flex; align-items:center; gap:4px; background:#28a745; color:#fff; padding:6px 12px; border-radius:4px; font-size:12px; text-decoration:none;">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                            @endif
+                        </div>
+                    </td>
                 </tr>
                 @endforeach
                 <!-- <tr>
