@@ -48,14 +48,19 @@ class AdminController extends Controller
         {
             $role = Auth::user()->role;
 
-            // Dosen diarahkan ke portal dosen
-            if ($role === 'dosen') {
-                return redirect('/dosen/luaran-sinta');
+            // Jika Admin LPPM login via web, arahkan ke panel mandiri
+            if ($role === 'admin' || $role === 'Admin' || $role === 'ADMIN') {
+                Auth::logout();
+                return back()->with('error', 'Admin harap login melalui Panel Admin Mandiri (Token).');
             }
 
-            // Jika Admin LPPM/UPPM login via web, beri tahu untuk pakai panel mandiri
-            Auth::logout();
-            return back()->with('error', 'Admin harap login melalui Panel Admin Mandiri (Token).');
+            // Dosen diarahkan ke beranda (ada menu Portal Dosen di navbar)
+            if ($role === 'dosen') {
+                return redirect('/');
+            }
+
+            // Mahasiswa dan role lain diarahkan ke beranda
+            return redirect('/');
         }
         else
         {

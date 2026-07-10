@@ -74,7 +74,7 @@ class PelaksanaanController extends Controller
         $pelaksanaan = Pelaksanaan::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role !== 'admin' && $pelaksanaan->user_id !== $user->id) {
+        if ($user->role != 'admin' && $pelaksanaan->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 
@@ -91,7 +91,7 @@ class PelaksanaanController extends Controller
         $pelaksanaan = Pelaksanaan::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role !== 'admin' && $pelaksanaan->user_id !== $user->id) {
+        if ($user->role != 'admin' && $pelaksanaan->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 
@@ -124,7 +124,7 @@ class PelaksanaanController extends Controller
         $pelaksanaan = Pelaksanaan::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role !== 'admin' && $pelaksanaan->user_id !== $user->id) {
+        if ($user->role != 'admin' && $pelaksanaan->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 

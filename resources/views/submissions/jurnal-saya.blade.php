@@ -8,8 +8,11 @@
 </section>
 <section style="padding: 40px 0 60px; min-height: 60vh; background: #f0f3f0;">
     <div class="container">
-        <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <p style="color:#787878; margin:0;">Daftar jurnal yang telah Anda ajukan</p>
+            <a href="{{ url('/ajukan-jurnal') }}" class="btn-submit-sm">
+                <i class="fas fa-plus" style="margin-right:5px;"></i>Ajukan Jurnal
+            </a>
         </div>
 
         @if($journals->count())

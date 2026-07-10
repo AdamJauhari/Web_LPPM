@@ -6,18 +6,29 @@ let currentData = [];
 let editingId = null;
 
 const TABLE_CONFIG = {
-    researches:            { label:'Penelitian', icon:'fa-flask',         fields:['title','body','thumbnail'], colors:'#1a4d2e' },
-    community_services:    { label:'Pengabdian', icon:'fa-hands-helping', fields:['title','body','thumbnail'], colors:'#2d6b42' },
+    researches:            { label:'Penelitian (Berita)', icon:'fa-flask',         fields:['title','body','thumbnail'], colors:'#1a4d2e' },
+    community_services:    { label:'Pengabdian (Berita)', icon:'fa-hands-helping', fields:['title','body','thumbnail'], colors:'#2d6b42' },
     publications:          { label:'Publikasi',  icon:'fa-file-alt',      fields:['title','author','date','abstract','file'],      colors:'#c4992a' },
     organization_members:  { label:'Struktur Organisasi', icon:'fa-sitemap', fields:['position','name','photo','photo_position','sort_order'], colors:'#0d2b1a' },
-    users:                 { label:'Users',      icon:'fa-users',         fields:['name','email','password','role','nim_nip'],  colors:'#6b4c1a' },
+    users:                 { label:'Users',      icon:'fa-users',         fields:['name','username','email','password','role','nim_nip','nidn','fakultas','jabatan_fungsional'],  colors:'#6b4c1a' },
     publikasis:            { label:'Data Publikasi', icon:'fa-book',      fields:['user_id','judul','abstrak','jenis_publikasi','kategori_reputasi','url_jurnal','url_repository'], colors:'#1a6b3a' },
     pelaksanaans:          { label:'Data Pelaksanaan', icon:'fa-tasks',   fields:['user_id','judul','deskripsi_singkat','jenis_kegiatan','sumber_dana','url'], colors:'#4a6b1a' },
     research_submissions:  { label:'Ajuan Proposal', icon:'fa-paper-plane', fields:['status','admin_notes','rejection_reason'], colors:'#2d6b42', reviewOnly:true },
     pkm_submissions:       { label:'Ajuan PKM',      icon:'fa-hands-helping', fields:['status','admin_notes','rejection_reason'], colors:'#1a4d2e', reviewOnly:true },
     hki_submissions:       { label:'Ajuan HKI',      icon:'fa-certificate', fields:['status','admin_notes','rejection_reason'], colors:'#0d2b1a', reviewOnly:true },
-    journal_submissions:   { label:'Ajuan Jurnal',   icon:'fa-journal-whills', fields:['status','admin_notes'], colors:'#c4992a', reviewOnly:true }
+    journal_submissions:   { label:'Ajuan Jurnal',   icon:'fa-journal-whills', fields:['status','admin_notes'], colors:'#c4992a', reviewOnly:true },
+    // === ERD Tables ===
+    fakultas:              { label:'Fakultas',         icon:'fa-university',    fields:['nama_fakultas','nama_dekan','nama_dosen','no_hp'], colors:'#1a3d5e' },
+    prodi:                 { label:'Program Studi',    icon:'fa-graduation-cap',fields:['nama_prodi','nama_koordinator','fakultas_id','no_hp','email'], colors:'#2d5a7a' },
+    dosen:                 { label:'Dosen',            icon:'fa-chalkboard-teacher', fields:['user_id','nama_dosen','nidn','nupk','pangkat_jabatan','id_prodi','no_hp','sk_dosen'], colors:'#3d7a9a' },
+    penelitian:            { label:'Penelitian Formal',icon:'fa-microscope',    fields:['dosen_id','judul','klasifikasi','tahun','dana','jumlah_dana','status_proposal','status_verifikasi'], colors:'#1a5e3d' },
+    pengajuan_proposal:    { label:'Pengajuan Proposal',icon:'fa-file-signature',fields:['penelitian_id','user_id','catatan_pengajuan','status','tanggal_ajuan'], colors:'#3a7a5e', reviewOnly:true },
+    verifikasi_penelitian: { label:'Verifikasi Penelitian',icon:'fa-check-circle',fields:['penelitian_id','user_id','catatan_verifikasi','tanggal_verifikasi'], colors:'#2a6a4e', reviewOnly:true },
+    hki:                   { label:'HKI (Formal)',     icon:'fa-shield-alt',    fields:['penelitian_id','jenis_hki','judul_hki','nomor_pendaftaran','file_sertifikat'], colors:'#5e3d1a' },
+    laporan_sidang:        { label:'Laporan Sidang',   icon:'fa-gavel',         fields:['penelitian_id','tanggal_sidang','berita_acara_file','hasil_sidang'], colors:'#7a5e2d' },
+    laporan_jurnal:        { label:'Laporan Jurnal',   icon:'fa-newspaper',     fields:['penelitian_id','kategori_jurnal','nama_jurnal','url_jurnal','file_bukti'], colors:'#9a7e4d' }
 };
+
 
 /* === Opsi Kategori Reputasi (Dinamis) === */
 const KATEGORI_OPTIONS = {
@@ -159,7 +170,24 @@ function getFieldLabel(f) {
         'url_repository':'URL Repository', 'jenis_kegiatan':'Jenis Kegiatan',
         'deskripsi_singkat':'Deskripsi Singkat', 'sumber_dana':'Sumber Dana',
         'url':'URL Laporan/Bukti', 'user_id':'User ID', 'rejection_reason':'Alasan Penolakan',
-        'author':'Penulis', 'date':'Tanggal', 'title':'Judul', 'body':'Deskripsi'
+        'author':'Penulis', 'date':'Tanggal', 'title':'Judul', 'body':'Deskripsi',
+        'username':'Username', 'fakultas':'Fakultas', 'jabatan_fungsional':'Jabatan Fungsional',
+        // ERD fields
+        'nama_fakultas':'Nama Fakultas', 'nama_dekan':'Nama Dekan', 'nama_dosen':'Nama Dosen',
+        'no_hp':'No. HP', 'nama_prodi':'Nama Program Studi', 'nama_koordinator':'Nama Koordinator',
+        'fakultas_id':'Fakultas (ID)', 'email':'Email', 'id_prodi':'Program Studi (ID)',
+        'nidn':'NIDN', 'nupk':'NUPK', 'pangkat_jabatan':'Pangkat/Jabatan',
+        'dosen_luaran':'Luaran Dosen', 'sk_dosen':'SK Dosen',
+        'dosen_id':'Dosen (ID)', 'universitas_id':'ID Universitas', 'klasifikasi':'Klasifikasi Dana',
+        'tahun':'Tahun', 'dana':'Dana (Rp)', 'jumlah_dana':'Jumlah Dana (Rp)',
+        'status_proposal':'Status Proposal', 'status_verifikasi':'Status Verifikasi',
+        'penelitian_id':'Penelitian (ID)', 'catatan_pengajuan':'Catatan Pengajuan',
+        'status':'Status', 'tanggal_ajuan':'Tanggal Ajuan',
+        'catatan_verifikasi':'Catatan Verifikasi', 'tanggal_verifikasi':'Tanggal Verifikasi',
+        'jenis_hki':'Jenis HKI', 'judul_hki':'Judul HKI', 'nomor_pendaftaran':'Nomor Pendaftaran',
+        'file_sertifikat':'File Sertifikat', 'tanggal_sidang':'Tanggal Sidang',
+        'berita_acara_file':'File Berita Acara', 'hasil_sidang':'Hasil Sidang',
+        'kategori_jurnal':'Kategori Jurnal', 'nama_jurnal':'Nama Jurnal', 'file_bukti':'File Bukti'
     };
     return labels[f] || f.charAt(0).toUpperCase() + f.slice(1);
 }
@@ -196,7 +224,17 @@ function renderField(f, value) {
         return `<select id="field-${f}" style="${selStyle}"><option value="">-- Pilih --</option><option value="Internasional" ${val==='Internasional'?'selected':''}>Internasional</option><option value="Nasional (Dikti/Saintek)" ${val==='Nasional (Dikti/Saintek)'?'selected':''}>Nasional (Dikti/Saintek)</option><option value="Nasional (Kemenag)" ${val==='Nasional (Kemenag)'?'selected':''}>Nasional (Kemenag)</option><option value="Internal" ${val==='Internal'?'selected':''}>Internal</option><option value="Mitra" ${val==='Mitra'?'selected':''}>Mitra</option></select>`;
     if (f === 'date')
         return `<input type="date" id="field-${f}" value="${valAttr}" style="${selStyle}">`;
-    return `<input type="${f==='password'?'password':'text'}" id="field-${f}" value="${f==='password'?'':valAttr}" placeholder="${f==='nim_nip'?'Contoh: 2322105018':f==='sort_order'?'Angka urutan (1,2,3,...)':f==='user_id'?'ID user pemilik data':''}">`;
+    // Placeholder untuk field khusus
+    const placeholders = {
+        'nim_nip': 'Contoh: 2322105018',
+        'sort_order': 'Angka urutan (1,2,3,...)',
+        'user_id': 'ID user pemilik data',
+        'nidn': 'Contoh: 0012345678',
+        'username': 'Username unik (opsional)',
+        'fakultas': 'Contoh: FTI, FEKON, dll',
+        'jabatan_fungsional': 'Contoh: Asisten Ahli, Lektor',
+    };
+    return `<input type="${f==='password'?'password':'text'}" id="field-${f}" value="${f==='password'?'':valAttr}" placeholder="${placeholders[f]||''}">`;
 }
 
 function updateKategoriDropdown(selectedValue) {

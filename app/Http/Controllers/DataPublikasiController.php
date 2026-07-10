@@ -77,7 +77,7 @@ class DataPublikasiController extends Controller
         $user = Auth::user();
 
         // Hanya pemilik atau admin yang bisa edit
-        if ($user->role !== 'admin' && $publikasi->user_id !== $user->id) {
+        if ($user->role != 'admin' && $publikasi->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 
@@ -94,7 +94,7 @@ class DataPublikasiController extends Controller
         $publikasi = Publikasi::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role !== 'admin' && $publikasi->user_id !== $user->id) {
+        if ($user->role != 'admin' && $publikasi->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 
@@ -129,7 +129,7 @@ class DataPublikasiController extends Controller
         $publikasi = Publikasi::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role !== 'admin' && $publikasi->user_id !== $user->id) {
+        if ($user->role != 'admin' && $publikasi->user_id != $user->id) {
             abort(403, 'Unauthorized');
         }
 
