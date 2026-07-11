@@ -11,7 +11,7 @@ for ($i = 0; $i < 12; $i++) {
 }
 
 $tokenFile = __DIR__ . '/storage/app/admin_token.txt';
-$tokenFile2 = __DIR__ . '/admin_electron/admin_token.txt';
+$tokenFile2 = __DIR__ . '/admin/admin_token.txt';
 
 // Pastikan directory ada
 if (!is_dir(dirname($tokenFile))) {

@@ -66,9 +66,17 @@ try {
         slug VARCHAR(255) NULL,
         body TEXT NULL,
         file VARCHAR(255) NULL,
+        abstract TEXT NULL,
+        author VARCHAR(255) NULL,
+        date DATE NULL,
         created_at TIMESTAMP NULL,
         updated_at TIMESTAMP NULL
     )");
+    // Tambah kolom baru jika belum ada
+    $cols = array_column($pdo->query("PRAGMA table_info(publications)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    if (!in_array('abstract', $cols)) $pdo->exec("ALTER TABLE publications ADD COLUMN abstract TEXT NULL");
+    if (!in_array('author', $cols))   $pdo->exec("ALTER TABLE publications ADD COLUMN author VARCHAR(255) NULL");
+    if (!in_array('date', $cols))     $pdo->exec("ALTER TABLE publications ADD COLUMN date DATE NULL");
     echo "[OK] Tabel publications\n";
 
     // =========================================================
