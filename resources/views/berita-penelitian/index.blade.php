@@ -5,7 +5,7 @@
 @section('container')
 
 {{-- Page Header --}}
-<section class="hero-banner" style="padding: 120px 0 60px; min-height: auto;">
+<section class="hero-banner" style="padding: 160px 0 100px; min-height: auto;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">

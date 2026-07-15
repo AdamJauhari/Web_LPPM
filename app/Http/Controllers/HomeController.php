@@ -9,10 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $berita = \App\Berita::orderBy('date', 'desc')->take(5)->get();
         $researches = \App\Researche::orderBy('date', 'desc')->take(5)->get();
         $comserv = \App\CommunityService::orderBy('date', 'desc')->take(5)->get();
         $orgMembers = DB::table('organization_members')->orderBy('sort_order')->get();
-        return view('/index', compact('researches', 'comserv', 'orgMembers'));
+        return view('/index', compact('berita', 'researches', 'comserv', 'orgMembers'));
     }
 
     public function show($title)

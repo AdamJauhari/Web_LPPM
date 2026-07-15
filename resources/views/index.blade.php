@@ -273,64 +273,170 @@
     <!-- Kegiatan LPPM - Penelitian & Pengabdian Terbaru -->
     <section class="pricing_area" style="padding: 80px 0; background: #fff;">
         <div class="container">
-            <div class="text-center mb-5">
-                <h2 style="font-size: 32px; color: #1a4d2e; font-weight: 700;">Kegiatan Terbaru</h2>
-                <p style="color: #7f7f7f; max-width: 600px; margin: 10px auto 0;">Penelitian dan pengabdian terbaru dari dosen dan peneliti Universitas Cendekia Abditama.</p>
-            </div>
-            <div class="row">   
-                <div class="col-sm-6 col-lg-6 mb-4">
-                    <div style="background: #f9fafb; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); height: 100%;">
-                        <div class="d-flex align-items-center mb-4">
-                            <div style="min-width: 50px; height: 50px; background: #e8f0eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                <i class="fas fa-flask" style="color: #1a4d2e; font-size: 20px;"></i>
-                            </div>
-                            <div>
-                                <a href="{{ url('/penelitian') }}" style="color: #1a4d2e; font-weight: 700; font-size: 20px; text-decoration: none;">Penelitian</a>
-                                <p style="color: #7f7f7f; margin: 0; font-size: 13px;">Riset ilmiah dosen & peneliti UCA</p>
-                            </div>
-                        </div>
-                        <hr style="border-color: #e8f0eb;">
-                        @forelse( $researches as $rsc )
-                        <div style="padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
-                            <a href="/penelitian/{{ $rsc->slug }}" style="color: #1d1d1d; font-size: 15px; font-weight: 500; text-decoration: none; display: block; margin-bottom: 4px;">{{ $rsc->title }}</a>
-                            <span style="color: #999; font-size: 12px;"><i class="far fa-calendar-alt" style="margin-right: 5px;"></i>{{ $rsc->date }} &bull; {{ $rsc->author }}</span>
-                        </div>
-                        @empty
-                        <div style="text-align: center; padding: 40px 20px;">
-                            <i class="fas fa-book-open" style="font-size: 40px; color: #d4e2d9; margin-bottom: 15px;"></i>
-                            <p style="color: #aaa; margin-bottom: 15px; font-size: 14px;">Belum ada data penelitian yang dipublikasikan.<br>Data akan tampil setelah ditambahkan melalui panel admin.</p>
-                            <a href="{{ url('/penelitian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #1a4d2e; padding: 8px 20px; border-radius: 6px;">Lihat Halaman Penelitian →</a>
-                        </div>
-                        @endforelse
-                    </div>
-                </div>
+            <style>
+            .news-carousel {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 24px;
+                margin-bottom: 60px;
+            }
+            .news-card {
+                text-decoration: none !important;
+                display: block;
+                transition: transform 0.2s;
+            }
+            .news-card:hover {
+                transform: translateY(-4px);
+            }
+            .news-img {
+                width: 100%;
+                aspect-ratio: 16/9;
+                object-fit: cover;
+                margin-bottom: 12px;
+                border-radius: 4px;
+                background: #e8f0eb;
+            }
+            .news-title {
+                font-size: 15px;
+                font-weight: 800;
+                color: #000;
+                line-height: 1.4;
+                display: -webkit-box;
+                -webkit-line-clamp: 4;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .news-section-title {
+                font-size: 20px;
+                font-weight: 800;
+                color: #000;
+                text-transform: uppercase;
+                margin-bottom: 24px;
+                position: relative;
+            }
+            .news-section-title::after {
+                content: '';
+                display: block;
+                width: 35px;
+                height: 4px;
+                background: #174261; /* Warna biru gelap ala portal berita */
+                margin-top: 10px;
+            }
+            @media(max-width: 991px) {
+                .news-carousel { grid-template-columns: repeat(3, 1fr); }
+            }
+            @media(max-width: 767px) {
+                .news-carousel { grid-template-columns: repeat(2, 1fr); }
+            }
+            @media(max-width: 575px) {
+                .news-carousel { grid-template-columns: 1fr; }
+            }
+            </style>
 
-                <div class="col-sm-6 col-lg-6 mb-4">
-                    <div style="background: #f9fafb; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); height: 100%;">
-                        <div class="d-flex align-items-center mb-4">
-                            <div style="min-width: 50px; height: 50px; background: #e8f0eb; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 15px;">
-                                <i class="fas fa-hands-helping" style="color: #1a4d2e; font-size: 20px;"></i>
+            <div class="news-section-title">Semua Kegiatan Terbaru</div>
+            
+            @php
+                $allActivity = collect();
+                foreach($berita as $b) {
+                    $allActivity->push((object)[
+                        'type_label' => 'BERITA',
+                        'type_color' => '#17a2b8',
+                        'type_url'   => url('/berita/' . $b->slug),
+                        'img_path'   => $b->gambar ? 'img/berita/' . $b->gambar : '',
+                        'item_title' => $b->judul,
+                        'item_desc'  => $b->ringkasan_auto,
+                        'item_author'=> $b->penulis,
+                        'item_date'  => isset($b->tanggal) ? \Carbon\Carbon::parse($b->tanggal) : \Carbon\Carbon::parse($b->created_at)
+                    ]);
+                }
+                foreach($researches as $rsc) {
+                    $allActivity->push((object)[
+                        'type_label' => 'PENELITIAN',
+                        'type_color' => '#28a745',
+                        'type_url'   => url('/penelitian/' . $rsc->slug),
+                        'img_path'   => $rsc->thumbnail ? 'img/penelitian/' . $rsc->thumbnail : '',
+                        'item_title' => $rsc->title,
+                        'item_desc'  => $rsc->ringkasan_auto,
+                        'item_author'=> $rsc->penulis ?? $rsc->author,
+                        'item_date'  => isset($rsc->tanggal) ? \Carbon\Carbon::parse($rsc->tanggal) : \Carbon\Carbon::parse($rsc->created_at ?? $rsc->date)
+                    ]);
+                }
+                foreach($comserv as $cs) {
+                    $allActivity->push((object)[
+                        'type_label' => 'PENGABDIAN',
+                        'type_color' => '#c4992a',
+                        'type_url'   => url('/pengabdian/' . $cs->slug),
+                        'img_path'   => $cs->thumbnail ? 'img/pengabdian/' . $cs->thumbnail : '',
+                        'item_title' => $cs->title,
+                        'item_desc'  => $cs->ringkasan_auto,
+                        'item_author'=> $cs->penulis ?? $cs->author,
+                        'item_date'  => isset($cs->tanggal) ? \Carbon\Carbon::parse($cs->tanggal) : \Carbon\Carbon::parse($cs->created_at ?? $cs->date)
+                    ]);
+                }
+                // Urutkan dari yang terbaru (kiri) ke terlama (kanan)
+                $sortedActivity = $allActivity->sortByDesc(function($item) {
+                    return $item->item_date->timestamp;
+                })->take(4);
+            @endphp
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 60px;" class="kegiatan-grid">
+                <style>
+                    @media(max-width: 1200px) { .kegiatan-grid { grid-template-columns: repeat(3, 1fr) !important; } }
+                    @media(max-width: 991px) { .kegiatan-grid { grid-template-columns: repeat(2, 1fr) !important; } }
+                    @media(max-width: 767px) { .kegiatan-grid { grid-template-columns: 1fr !important; } }
+                </style>
+                
+                @forelse($sortedActivity as $item)
+                <a href="{{ $item->type_url }}" 
+                   style="text-decoration: none; display: flex; flex-direction: column; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; height: 100%; position: relative; z-index: 1;"
+                   onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.12)'"
+                   onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+
+                        {{-- Gambar --}}
+                        <div style="position: relative; overflow: hidden; height: 190px; background: linear-gradient(135deg, #1a4d2e, #2d6b42); flex-shrink: 0;">
+                            @if($item->img_path)
+                                <img src="{{ asset($item->img_path) }}" alt="{{ $item->item_title }}"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform=''">
+                            @else
+                                <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-image" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+                                </div>
+                            @endif
+                            {{-- Badge Kategori di Kanan Atas --}}
+                            <span style="position: absolute; top: 12px; right: 12px; background: {{ $item->type_color }}; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; z-index: 2;">
+                                {{ $item->type_label }}
+                            </span>
+                        </div>
+
+                        {{-- Konten Card --}}
+                        <div style="padding: 20px; flex: 1; display: flex; flex-direction: column;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                                <i class="fas fa-calendar-alt" style="color: #aaa; font-size: 12px;"></i>
+                                <span style="color: #aaa; font-size: 12px;">{{ $item->item_date->translatedFormat('d M Y') }}</span>
+                                @if($item->item_author)
+                                <span style="color: #ddd;">•</span>
+                                <i class="fas fa-user" style="color: #aaa; font-size: 12px;"></i>
+                                <span style="color: #aaa; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">{{ explode(',', $item->item_author)[0] ?? $item->item_author }}</span>
+                                @endif
                             </div>
-                            <div>
-                                <a href="{{ url('/pengabdian') }}" style="color: #1a4d2e; font-weight: 700; font-size: 20px; text-decoration: none;">Pengabdian</a>
-                                <p style="color: #7f7f7f; margin: 0; font-size: 13px;">Pengabdian kepada masyarakat UCA</p>
+                            <h5 style="color: #1a1a1a; font-size: 15px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                {{ $item->item_title }}
+                            </h5>
+                            <p style="color: #777; font-size: 13px; line-height: 1.6; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                {{ Str::limit($item->item_desc, 80) }}
+                            </p>
+                            <div style="margin-top: auto;">
+                                <span style="color: #1a4d2e; font-size: 13px; font-weight: 600;">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                                </span>
                             </div>
                         </div>
-                        <hr style="border-color: #e8f0eb;">
-                        @forelse( $comserv as $cs )
-                        <div style="padding: 12px 0; border-bottom: 1px solid #f0f0f0;">
-                            <a href="/pengabdian/{{ $cs->slug }}" style="color: #1d1d1d; font-size: 15px; font-weight: 500; text-decoration: none; display: block; margin-bottom: 4px;">{{ $cs->title }}</a>
-                            <span style="color: #999; font-size: 12px;"><i class="far fa-calendar-alt" style="margin-right: 5px;"></i>{{ $cs->date }} &bull; {{ $cs->author }}</span>
-                        </div>
-                        @empty
-                        <div style="text-align: center; padding: 40px 20px;">
-                            <i class="fas fa-users" style="font-size: 40px; color: #d4e2d9; margin-bottom: 15px;"></i>
-                            <p style="color: #aaa; margin-bottom: 15px; font-size: 14px;">Belum ada data pengabdian yang dipublikasikan.<br>Data akan tampil setelah ditambahkan melalui panel admin.</p>
-                            <a href="{{ url('/pengabdian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #1a4d2e; padding: 8px 20px; border-radius: 6px;">Lihat Halaman Pengabdian →</a>
-                        </div>
-                        @endforelse
-                    </div>
-                </div>
+                </a>
+                @empty
+                <p style="color: #888; grid-column: 1/-1; text-align: center;">Belum ada kegiatan terbaru.</p>
+                @endforelse
             </div>
         </div>
     </section>

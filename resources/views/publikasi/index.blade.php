@@ -3,9 +3,23 @@
 @section('title', 'Publikasi Lembaga Penelitian dan Pengabdian Kepada Masyarakat Universitas Cendekia Abditama')
 
 @section('container')
-    <section class="hero-banner d-flex align-items-center">
-        <div class="container text-center">
-            <h2>Publikasi Penelitian</h2>
+    <section class="hero-banner" style="padding: 160px 0 100px; min-height: auto;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                        <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0;">
+                            <li class="breadcrumb-item"><a href="{{ url('/') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Beranda</a></li>
+                            <li class="breadcrumb-item active" style="color: #c4992a;">Publikasi</li>
+                        </ol>
+                    </nav>
+                    <h1 style="color: #fff; font-size: 36px; font-weight: 800; margin: 0 0 10px;">Publikasi Penelitian</h1>
+                    <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 15px;">Daftar jurnal dan publikasi ilmiah LPPM UCA</p>
+                </div>
+                <div class="col-lg-4 text-right d-none d-lg-block">
+                    <i class="fas fa-book" style="font-size: 80px; color: rgba(255,255,255,0.12);"></i>
+                </div>
+            </div>
         </div>
     </section>
 
