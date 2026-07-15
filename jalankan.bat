@@ -6,11 +6,19 @@ echo        (SQLite - Tanpa MySQL Server)
 echo ===================================================
 echo.
 
-:: Gunakan PHP dari XAMPP (versi 7.4 kompatibel Laravel 7)
-set "PHP=C:\xampp\php\php.exe"
-if not exist "%PHP%" (
-    echo [ERROR] PHP tidak ditemukan di %PHP%
-    echo Pastikan XAMPP terinstal di C:\xampp
+:: Mencari PHP (Cek di PATH sistem terlebih dahulu, jika tidak ada cari di XAMPP)
+where php >nul 2>nul
+if %ERRORLEVEL% equ 0 (
+    set "PHP=php"
+) else (
+    set "PHP=C:\xampp\php\php.exe"
+)
+
+:: Verifikasi apakah PHP bisa dijalankan
+%PHP% -v >nul 2>nul
+if %ERRORLEVEL% neq 0 (
+    echo [ERROR] PHP tidak ditemukan atau tidak dapat dijalankan.
+    echo Pastikan XAMPP terinstal di C:\xampp atau PHP ada di PATH sistem Anda.
     pause
     exit /b 1
 )
@@ -18,7 +26,24 @@ if not exist "%PHP%" (
 :: [1/5] Cek dan install Composer
 if not exist vendor (
     echo [1/5] Menginstal dependensi PHP - Composer...
-    call composer install
+    where composer >nul 2>nul
+    if %errorlevel% equ 0 (
+        call composer install
+    ) else (
+        echo [INFO] Composer tidak ditemukan secara global, mengunduh composer.phar secara otomatis...
+        if not exist composer.phar (
+            %PHP% -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            %PHP% composer-setup.php --quiet
+            del composer-setup.php
+        )
+        if exist composer.phar (
+            %PHP% composer.phar install
+        ) else (
+            echo [ERROR] Gagal mengunduh Composer. Pastikan komputer terhubung ke internet.
+            pause
+            exit /b 1
+        )
+    )
 ) else (
     echo [1/5] Dependensi PHP sudah terinstal. Melewati...
 )
@@ -26,9 +51,24 @@ if not exist vendor (
 :: [2/5] Cek dan install NPM
 if not exist node_modules (
     echo [2/5] Menginstal dependensi Frontend - NPM...
-    call npm install
+    where npm >nul 2>nul
+    if %errorlevel% neq 0 (
+        echo [WARNING] NPM tidak ditemukan!
+        echo Pastikan Node.js terinstal ^(https://nodejs.org/^) jika butuh kompilasi frontend.
+        echo Melewati instalasi NPM...
+    ) else (
+        call npm install
+    )
 ) else (
     echo [2/5] Dependensi Frontend sudah terinstal. Melewati...
+)
+
+:: Memastikan vendor terinstal
+if not exist vendor\autoload.php (
+    echo [ERROR] File vendor\autoload.php tidak ditemukan.
+    echo Pastikan instalasi composer berhasil sebelum menjalankan aplikasi.
+    pause
+    exit /b 1
 )
 
 :: [3/5] Cek dan buat .env
