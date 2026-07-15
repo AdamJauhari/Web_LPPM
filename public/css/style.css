@@ -3707,3 +3707,13 @@ padding-left: 10px;
     width: 16px;
     text-align: center;
 }
+
+@media (max-width: 991px) {
+    .dropdown-header-profile {
+        margin: 0;
+        border-bottom: 1px solid #eee;
+    }
+    .profile-dropdown .dropdown-item {
+        padding: 10px 20px;
+    }
+}

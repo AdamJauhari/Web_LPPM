@@ -16,6 +16,7 @@
 <body>
 
     <style>
+        html, body { overflow-x: hidden; width: 100%; }
         .navbar-brand-custom { display: flex; align-items: center; gap: 10px; text-decoration: none; }
         .navbar-brand-custom img { height: 40px; width: 40px; border-radius: 8px; object-fit: cover; }
         .navbar-brand-custom span { color: #fff; font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
@@ -40,22 +41,48 @@
                         <img src="{{ asset('img/logo-uca.jpg') }}" alt="Logo UCA">
                         <span>LPPM</span>
                     </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                    <div class="d-flex align-items-center ml-auto d-lg-none">
+                        @if(Auth::check())
+                        <div class="nav-item dropdown" style="list-style: none;">
+                            <a class="nav-link btn-profile-nav dropdown-toggle" href="#" id="profileDropdownMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="padding: 6px 12px !important; margin-right: 12px; margin-top: 0 !important;">
+                                <i class="fas fa-user-circle"></i> <span class="d-none d-sm-inline">{{ explode(' ', Auth::user()->name)[0] }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown" aria-labelledby="profileDropdownMobile" style="position: absolute;">
+                                <div class="dropdown-header-profile">
+                                    <i class="fas fa-user-circle fa-2x"></i>
+                                    <div>
+                                        <strong>{{ Auth::user()->name }}</strong>
+                                        <small>{{ ucfirst(Auth::user()->role ?? 'mahasiswa') }} — {{ Auth::user()->nim_nip ?? '-' }}</small>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ url('/status-peninjauan') }}"><i class="fas fa-clipboard-check"></i> Status Peninjauan</a>
+                                <a class="dropdown-item" href="{{ url('/jurnal-saya') }}"><i class="fas fa-file-alt"></i> Jurnal Saya</a>
+                                <a class="dropdown-item" href="{{ url('/data-publikasi') }}"><i class="fas fa-book-open"></i> Data Publikasi</a>
+                                <a class="dropdown-item" href="{{ url('/data-pelaksanaan') }}"><i class="fas fa-clipboard-list"></i> Data Pelaksanaan</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ url('/login/logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </div>
+                        @else
+                        <a class="btn-login-nav" href="{{ url('/login') }}" style="margin-top: 0 !important; margin-right: 12px !important; padding: 6px 15px !important; margin-bottom: 0 !important;">Login</a>
+                        @endif
+
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
                     <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/tentang') }}">Tentang</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/berita') }}">Berita</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/penelitian') }}">Penelitian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/pengabdian') }}">Pengabdian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/publikasi') }}">Publikasi</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('/#contact-section') }}">Kontak</a></li>
                             @if(Auth::check())
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown d-none d-lg-flex">
                                 <a class="nav-link btn-profile-nav dropdown-toggle" href="#" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-user-circle"></i> {{ Auth::user()->name }}
                                 </a>
@@ -77,7 +104,7 @@
                                 </div>
                             </li>
                             @else
-                            <li class="nav-item"><a class="nav-link btn-login-nav" href="{{ url('/login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                            <li class="nav-item d-none d-lg-block"><a class="nav-link btn-login-nav" href="{{ url('/login') }}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
                             @endif
                         </ul>
                     </div>

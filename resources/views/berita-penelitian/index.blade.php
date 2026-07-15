@@ -5,7 +5,7 @@
 @section('container')
 
 {{-- Page Header --}}
-<section style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6b42 100%); padding: 60px 0 40px; margin-bottom: 0;">
+<section class="hero-banner" style="padding: 120px 0 60px; min-height: auto;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8">

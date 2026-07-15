@@ -328,11 +328,17 @@
     .org-divisi-row {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 0;
         padding-top: 0;
     }
+    .org-divisi-item {
+        flex: 0 0 auto;
+        width: 100%;
+    }
     .org-divisi-row::before { display: none; }
-    .org-divisi-item::before { display: none; }
+    .org-divisi-stem {
+        height: 25px;
+    }
 }
 </style>
 

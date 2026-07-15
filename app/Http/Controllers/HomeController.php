@@ -9,10 +9,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // $researches = DB::table('researches')->get(); //Query Builder
-        $researches = \App\Researche::orderBy('date', 'desc')->take(5)->get(); //Model
-        $comserv = \App\CommunityService::orderBy('date', 'desc')->take(5)->get(); //Model
-        return view('/index', ['researches' => $researches], ['comserv' => $comserv]);
+        $researches = \App\Researche::orderBy('date', 'desc')->take(5)->get();
+        $comserv = \App\CommunityService::orderBy('date', 'desc')->take(5)->get();
+        $orgMembers = DB::table('organization_members')->orderBy('sort_order')->get();
+        return view('/index', compact('researches', 'comserv', 'orgMembers'));
     }
 
     public function show($title)

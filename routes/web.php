@@ -22,11 +22,6 @@ Route::get('/', 'HomeController@index');
 Route::get('/berita', 'BeritaController@index');
 Route::get('/berita/{slug}', 'BeritaController@show');
 
-// Tentang LPPM
-Route::get('/tentang', function () {
-    $orgMembers = DB::table('organization_members')->orderBy('sort_order')->get();
-    return view('tentang', compact('orgMembers'));
-});
 
 // Penelitian
 Route::get('/penelitian', 'PenelitianController@index');
