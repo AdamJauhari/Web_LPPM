@@ -49,6 +49,7 @@
                         <ul class="nav navbar-nav menu_nav ml-auto">
                             <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/tentang') }}">Tentang</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url('/berita') }}">Berita</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('/penelitian') }}">Penelitian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/pengabdian') }}">Pengabdian</a></li> 
                             <li class="nav-item"><a class="nav-link" href="{{ url('/publikasi') }}">Publikasi</a></li>
@@ -103,6 +104,7 @@
                     <ul>
                         <li><a href="{{ url('/') }}">Beranda</a></li>
                         <li><a href="{{ url('/tentang') }}">Tentang LPPM</a></li>
+                        <li><a href="{{ url('/berita') }}">Berita</a></li>
                         <li><a href="{{ url('/penelitian') }}">Penelitian</a></li>
                         <li><a href="{{ url('/pengabdian') }}">Pengabdian</a></li>
                         <li><a href="{{ url('/publikasi') }}">Publikasi</a></li>

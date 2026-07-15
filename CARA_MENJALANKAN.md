@@ -165,7 +165,7 @@ Aplikasi akan berjalan di: **http://127.0.0.1:8000**
 | Mahasiswa (contoh) | adamft@uca.ac.id | *(sesuai yang didaftarkan)* |
 
 ### Login Admin Panel
-Buka file: `admin_electron/index.html` di browser
+Buka path file: `admin/index.html` di browser
 
 | Keterangan | Nilai |
 |------------|-------|

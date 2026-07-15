@@ -95,6 +95,8 @@ class AdminApiController extends Controller
             $destination = 'img/pengabdian';
         } elseif ($type === 'publikasi') {
             $destination = 'download/publikasi';
+        } elseif ($type === 'berita') {
+            $destination = 'img/berita';
         } else {
             return response()->json(['error' => 'Invalid upload type'], 400);
         }
@@ -116,6 +118,7 @@ class AdminApiController extends Controller
         }
 
         return response()->json([
+            'berita' => DB::table('berita')->count(),
             'penelitian' => DB::table('researches')->count(),
             'pengabdian' => DB::table('community_services')->count(),
             'publikasi' => DB::table('publications')->count(),
@@ -148,7 +151,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
+        $allowed = ['berita', 'researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -178,7 +181,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
+        $allowed = ['berita', 'researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -199,7 +202,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
+        $allowed = ['berita', 'researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -216,6 +219,8 @@ class AdminApiController extends Controller
         // Generate slug
         if (isset($data['title'])) {
             $data['slug'] = Str::slug($data['title']);
+        } elseif (isset($data['judul']) && $table === 'berita') {
+            $data['slug'] = Str::slug($data['judul']) . '-' . time();
         }
 
         try {
@@ -235,7 +240,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
+        $allowed = ['berita', 'researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }
@@ -251,6 +256,8 @@ class AdminApiController extends Controller
 
         if (isset($data['title'])) {
             $data['slug'] = Str::slug($data['title']);
+        } elseif (isset($data['judul']) && $table === 'berita') {
+            $data['slug'] = Str::slug($data['judul']) . '-' . time();
         }
 
         try {
@@ -270,7 +277,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $allowed = ['researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
+        $allowed = ['berita', 'researches', 'community_services', 'publications', 'expertises', 'users', 'research_submissions', 'journal_submissions', 'organization_members', 'publikasis', 'pelaksanaans', 'pkm_submissions', 'hki_submissions', 'fakultas', 'prodi', 'dosen', 'penelitian', 'pengajuan_proposal', 'verifikasi_penelitian', 'hki', 'laporan_sidang', 'laporan_jurnal'];
         if (!in_array($table, $allowed)) {
             return response()->json(['error' => 'Table not allowed'], 400);
         }

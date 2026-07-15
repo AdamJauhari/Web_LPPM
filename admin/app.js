@@ -6,8 +6,9 @@ let currentData = [];
 let editingId = null;
 
 const TABLE_CONFIG = {
-    researches:            { label:'Penelitian (Berita)', icon:'fa-flask',         fields:['title','body','thumbnail'], colors:'#1a4d2e' },
-    community_services:    { label:'Pengabdian (Berita)', icon:'fa-hands-helping', fields:['title','body','thumbnail'], colors:'#2d6b42' },
+    berita:                { label:'Berita',            icon:'fa-newspaper',    fields:['judul','ringkasan','konten','kategori','status','tanggal','penulis','gambar'], colors:'#2c5282' },
+    researches:            { label:'Penelitian',        icon:'fa-flask',         fields:['title','ringkasan','body','kategori','status','tanggal','penulis','thumbnail'], colors:'#1a4d2e' },
+    community_services:    { label:'Pengabdian',        icon:'fa-hands-helping', fields:['title','ringkasan','body','kategori','status','tanggal','penulis','thumbnail'], colors:'#2d6b42' },
     publications:          { label:'Publikasi',  icon:'fa-file-alt',      fields:['title','author','date','abstract','file'],      colors:'#c4992a' },
     organization_members:  { label:'Struktur Organisasi', icon:'fa-sitemap', fields:['position','name','photo','photo_position','sort_order'], colors:'#0d2b1a' },
     users:                 { label:'Users',      icon:'fa-users',         fields:['name','username','email','password','role','nim_nip','nidn','fakultas','jabatan_fungsional'],  colors:'#6b4c1a' },
@@ -82,6 +83,7 @@ async function loadDashboard() {
         const stats = await api('GET', '/api/admin/stats');
         const grid = document.getElementById('stats-grid');
         const items = [
+            { key:'berita',      label:'Berita',     icon:'fa-newspaper', color:'#2c5282' },
             { key:'penelitian', label:'Penelitian', icon:'fa-flask', color:'#1a4d2e' },
             { key:'pengabdian', label:'Pengabdian', icon:'fa-hands-helping', color:'#2d6b42' },
             { key:'publikasi',  label:'Publikasi',  icon:'fa-file-alt', color:'#c4992a' },
@@ -170,8 +172,11 @@ function getFieldLabel(f) {
         'url_repository':'URL Repository', 'jenis_kegiatan':'Jenis Kegiatan',
         'deskripsi_singkat':'Deskripsi Singkat', 'sumber_dana':'Sumber Dana',
         'url':'URL Laporan/Bukti', 'user_id':'User ID', 'rejection_reason':'Alasan Penolakan',
-        'author':'Penulis', 'date':'Tanggal', 'title':'Judul', 'body':'Deskripsi',
+        'author':'Penulis', 'date':'Tanggal', 'title':'Judul', 'body':'Isi Berita / Konten', 'thumbnail':'Gambar (nama file)',
         'username':'Username', 'fakultas':'Fakultas', 'jabatan_fungsional':'Jabatan Fungsional',
+        // Berita fields
+        'konten':'Isi Berita', 'ringkasan':'Ringkasan', 'kategori':'Kategori', 'status':'Status',
+        'tanggal':'Tanggal', 'penulis':'Penulis/Sumber', 'gambar':'Gambar (nama file)',
         // ERD fields
         'nama_fakultas':'Nama Fakultas', 'nama_dekan':'Nama Dekan', 'nama_dosen':'Nama Dosen',
         'no_hp':'No. HP', 'nama_prodi':'Nama Program Studi', 'nama_koordinator':'Nama Koordinator',
@@ -197,13 +202,16 @@ function renderField(f, value) {
     const val = value || '';
     const valAttr = val.toString().replace(/"/g, '&quot;');
 
-    if (f === 'body' || f === 'abstract' || f === 'admin_notes' || f === 'abstrak' || f === 'deskripsi_singkat' || f === 'rejection_reason')
+    if (f === 'body' || f === 'abstract' || f === 'admin_notes' || f === 'abstrak' || f === 'deskripsi_singkat' || f === 'rejection_reason' || f === 'konten' || f === 'ringkasan')
         return `<textarea id="field-${f}">${val}</textarea>`;
     if (f === 'photo')
         return `${val ? `<div style="margin-bottom:8px"><img src="${API_URL}/img/organisasi/${val}" style="width:80px;height:100px;border-radius:12px;object-fit:cover;border:3px solid #c4992a"><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept="image/*" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti foto</small>' : ''}`;
     if (f === 'thumbnail') {
         const p = currentSection === 'community_services' ? 'pengabdian' : 'penelitian';
         return `${val ? `<div style="margin-bottom:8px"><img src="${API_URL}/img/${p}/${val}" style="width:150px;height:auto;border-radius:6px;border:1px solid #ccc"><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept="image/*" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti thumbnail</small>' : ''}`;
+    }
+    if (f === 'gambar') {
+        return `${val ? `<div style="margin-bottom:8px"><img src="${API_URL}/img/berita/${val}" style="width:150px;height:auto;border-radius:6px;border:1px solid #ccc"><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept="image/*" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti gambar</small>' : ''}`;
     }
     if (f === 'file') {
         return `${val ? `<div style="margin-bottom:8px"><a href="${API_URL}/download/publikasi/${val}" target="_blank" class="badge btn-success" style="padding:4px 8px;border-radius:4px;background:#2d6b42;color:#fff;text-decoration:none"><i class="fas fa-download"></i> Download File</a><small style="margin-left:8px;color:#888">${val}</small></div>` : ''}<input type="file" id="field-${f}" accept=".pdf,.doc,.docx,.zip,.rar" style="width:100%;padding:8px;border:2px dashed #c4992a;border-radius:6px;background:rgba(196,153,42,.05);cursor:pointer">${val ? '<small style="color:#888;font-size:11px">Kosongkan jika tidak ingin mengganti file</small>' : ''}`;
@@ -212,8 +220,12 @@ function renderField(f, value) {
         return `<select id="field-${f}" style="${selStyle}"><option value="top" ${val==='top'?'selected':''}>Atas (Wajah)</option><option value="center" ${(!val||val==='center')?'selected':''}>Tengah</option><option value="bottom" ${val==='bottom'?'selected':''}>Bawah</option><option value="20% 20%" ${val==='20% 20%'?'selected':''}>Kiri Atas</option><option value="80% 20%" ${val==='80% 20%'?'selected':''}>Kanan Atas</option></select>`;
     if (f === 'role')
         return `<select id="field-${f}" style="${selStyle}"><option value="mahasiswa" ${val==='mahasiswa'?'selected':''}>Mahasiswa</option><option value="dosen" ${val==='dosen'?'selected':''}>Dosen</option></select>`;
-    if (f === 'status')
+    if (f === 'status') {
+        if (currentSection === 'berita' || currentSection === 'researches' || currentSection === 'community_services') {
+            return `<select id="field-${f}" style="${selStyle}"><option value="published" ${(!val || val==='published')?'selected':''}>Published</option><option value="draft" ${val==='draft'?'selected':''}>Draft</option></select>`;
+        }
         return `<select id="field-${f}" style="${selStyle}"><option value="pending" ${val==='pending'?'selected':''}>Pending</option><option value="approved" ${val==='approved'?'selected':''}>Approved</option><option value="rejected" ${val==='rejected'?'selected':''}>Rejected</option><option value="revision" ${val==='revision'?'selected':''}>Revision</option></select>`;
+    }
     if (f === 'jenis_publikasi')
         return `<select id="field-${f}" style="${selStyle}" onchange="updateKategoriDropdown()"><option value="">-- Pilih --</option><option value="Jurnal" ${val==='Jurnal'?'selected':''}>Jurnal</option><option value="Prosiding" ${val==='Prosiding'?'selected':''}>Prosiding</option></select>`;
     if (f === 'kategori_reputasi')
@@ -222,7 +234,7 @@ function renderField(f, value) {
         return `<select id="field-${f}" style="${selStyle}"><option value="">-- Pilih --</option><option value="Penelitian" ${val==='Penelitian'?'selected':''}>Penelitian</option><option value="Pengabdian" ${val==='Pengabdian'?'selected':''}>Pengabdian</option></select>`;
     if (f === 'sumber_dana')
         return `<select id="field-${f}" style="${selStyle}"><option value="">-- Pilih --</option><option value="Internasional" ${val==='Internasional'?'selected':''}>Internasional</option><option value="Nasional (Dikti/Saintek)" ${val==='Nasional (Dikti/Saintek)'?'selected':''}>Nasional (Dikti/Saintek)</option><option value="Nasional (Kemenag)" ${val==='Nasional (Kemenag)'?'selected':''}>Nasional (Kemenag)</option><option value="Internal" ${val==='Internal'?'selected':''}>Internal</option><option value="Mitra" ${val==='Mitra'?'selected':''}>Mitra</option></select>`;
-    if (f === 'date')
+    if (f === 'date' || f === 'tanggal' || f === 'tanggal_ajuan' || f === 'tanggal_verifikasi' || f === 'tanggal_sidang')
         return `<input type="date" id="field-${f}" value="${valAttr}" style="${selStyle}">`;
     // Placeholder untuk field khusus
     const placeholders = {
@@ -324,7 +336,7 @@ async function saveData() {
     const cfg = TABLE_CONFIG[currentSection];
     
     // Check if there's a file upload field
-    const fileFields = ['photo', 'thumbnail', 'file'];
+    const fileFields = ['photo', 'thumbnail', 'file', 'gambar'];
     for (let fName of fileFields) {
         const fileField = document.getElementById(`field-${fName}`);
         if (fileField && fileField.type === 'file' && fileField.files.length > 0) {
@@ -333,7 +345,12 @@ async function saveData() {
             
             let uploadUrl = API_URL + '/api/admin/upload-photo';
             if (fName !== 'photo') {
-                formData.append('type', currentSection === 'community_services' ? 'pengabdian' : (currentSection === 'publications' ? 'publikasi' : 'penelitian'));
+                let uploadType = 'penelitian';
+                if (currentSection === 'community_services') uploadType = 'pengabdian';
+                else if (currentSection === 'publications') uploadType = 'publikasi';
+                else if (currentSection === 'berita') uploadType = 'berita';
+                
+                formData.append('type', uploadType);
                 uploadUrl = API_URL + '/api/admin/upload-file';
             }
 

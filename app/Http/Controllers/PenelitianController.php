@@ -14,23 +14,29 @@ class PenelitianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $researches = Researche::orderBy('date', 'desc')->paginate(5);//Model
-        // $date = Researche::select('date')->first();
-        // setlocale(LC_TIME, 'id_ID');
-        // Carbon::setLocale('id');
-        // Carbon::now()->formatLocalized("%A, %d %B %Y");
+        $query = Researche::where('status', 'published')->orderBy('tanggal', 'desc');
 
-        foreach($researches as $entries){
-            $entries->description = Str::limit($entries->description, 200);
-            // $entries->date = Carbon::createFromFormat('Y-m-d H:i:s', $entries->date)->year;
-            // $entries->date = date_format($entries->date, 'Y');
-            // $entries->date = Carbon::parse($date->date)->year; yg bener
-            // $date = $entries->date->isoFormat('D M Y');
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
         }
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('title', 'LIKE', "%{$q}%")
+                    ->orWhere('ringkasan', 'LIKE', "%{$q}%");
+            });
+        }
+
+        $researches = $query->paginate(9)->appends($request->query());
         
-        return view('/berita-penelitian/index', ['researches' => $researches]);
+        // Data terkait untuk sidebar (opsional)
+        $terkait = Researche::where('status', 'published')->orderBy('tanggal', 'desc')->take(4)->get();
+        $kategoriList = Researche::where('status', 'published')->whereNotNull('kategori')->distinct()->pluck('kategori');
+        
+        return view('/berita-penelitian/index', compact('researches', 'terkait', 'kategoriList'));
     }
 
     /**
@@ -90,9 +96,13 @@ class PenelitianController extends Controller
      */
     public function show($slug)
     {
-        $research = Researche::where('slug', $slug)->first();
-        return view('berita-penelitian/show', compact('research'));
-        // return $research;
+        $research = Researche::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $terkait = Researche::where('status', 'published')
+                    ->where('id', '!=', $research->id)
+                    ->orderBy('tanggal', 'desc')
+                    ->take(4)->get();
+                    
+        return view('berita-penelitian/show', compact('research', 'terkait'));
     }
 
     /**

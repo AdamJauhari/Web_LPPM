@@ -44,7 +44,26 @@ try {
     echo "[OK] Tabel users\n";
 
     // =========================================================
-    // Researches table (berita penelitian)
+    // Berita table
+    // =========================================================
+    $pdo->exec("CREATE TABLE IF NOT EXISTS berita (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        judul VARCHAR(255) NOT NULL,
+        slug VARCHAR(255) NOT NULL UNIQUE,
+        ringkasan TEXT NULL,
+        konten TEXT NOT NULL,
+        gambar VARCHAR(255) NULL,
+        kategori VARCHAR(50) DEFAULT 'Umum',
+        status VARCHAR(20) DEFAULT 'published',
+        tanggal DATE NOT NULL,
+        penulis VARCHAR(100) NULL,
+        created_at TIMESTAMP NULL,
+        updated_at TIMESTAMP NULL
+    )");
+    echo "[OK] Tabel berita\n";
+
+    // =========================================================
+    // Researches table (berita penelitian legacy)
     // =========================================================
     $pdo->exec("CREATE TABLE IF NOT EXISTS researches (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,6 +74,13 @@ try {
         created_at TIMESTAMP NULL,
         updated_at TIMESTAMP NULL
     )");
+    // Tambah kolom baru untuk menyamakan dengan Berita
+    $colsRes = array_column($pdo->query("PRAGMA table_info(researches)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    if (!in_array('ringkasan', $colsRes)) $pdo->exec("ALTER TABLE researches ADD COLUMN ringkasan TEXT NULL");
+    if (!in_array('kategori', $colsRes))  $pdo->exec("ALTER TABLE researches ADD COLUMN kategori VARCHAR(50) DEFAULT 'Penelitian'");
+    if (!in_array('status', $colsRes))    $pdo->exec("ALTER TABLE researches ADD COLUMN status VARCHAR(20) DEFAULT 'published'");
+    if (!in_array('tanggal', $colsRes))   $pdo->exec("ALTER TABLE researches ADD COLUMN tanggal DATE NULL");
+    if (!in_array('penulis', $colsRes))   $pdo->exec("ALTER TABLE researches ADD COLUMN penulis VARCHAR(100) NULL");
     echo "[OK] Tabel researches\n";
 
     // =========================================================
@@ -91,6 +117,13 @@ try {
         created_at TIMESTAMP NULL,
         updated_at TIMESTAMP NULL
     )");
+    // Tambah kolom baru untuk menyamakan dengan Berita
+    $colsCom = array_column($pdo->query("PRAGMA table_info(community_services)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    if (!in_array('ringkasan', $colsCom)) $pdo->exec("ALTER TABLE community_services ADD COLUMN ringkasan TEXT NULL");
+    if (!in_array('kategori', $colsCom))  $pdo->exec("ALTER TABLE community_services ADD COLUMN kategori VARCHAR(50) DEFAULT 'Pengabdian'");
+    if (!in_array('status', $colsCom))    $pdo->exec("ALTER TABLE community_services ADD COLUMN status VARCHAR(20) DEFAULT 'published'");
+    if (!in_array('tanggal', $colsCom))   $pdo->exec("ALTER TABLE community_services ADD COLUMN tanggal DATE NULL");
+    if (!in_array('penulis', $colsCom))   $pdo->exec("ALTER TABLE community_services ADD COLUMN penulis VARCHAR(100) NULL");
     echo "[OK] Tabel community_services\n";
 
     // =========================================================

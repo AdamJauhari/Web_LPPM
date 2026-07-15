@@ -13,13 +13,28 @@ class PengabdianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $comserv = CommunityService::orderBy('date', 'desc')->paginate(5);//Model
-        foreach($comserv as $entries){
-            $entries->description = Str::limit($entries->description, 200);
+        $query = CommunityService::where('status', 'published')->orderBy('tanggal', 'desc');
+
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
         }
-        return view('/pengabdian/index', ['comserv' => $comserv]);
+
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function($sub) use ($q) {
+                $sub->where('title', 'LIKE', "%{$q}%")
+                    ->orWhere('ringkasan', 'LIKE', "%{$q}%");
+            });
+        }
+
+        $comserv = $query->paginate(9)->appends($request->query());
+        
+        $terkait = CommunityService::where('status', 'published')->orderBy('tanggal', 'desc')->take(4)->get();
+        $kategoriList = CommunityService::where('status', 'published')->whereNotNull('kategori')->distinct()->pluck('kategori');
+        
+        return view('/pengabdian/index', compact('comserv', 'terkait', 'kategoriList'));
     }
 
     /**
@@ -76,9 +91,13 @@ class PengabdianController extends Controller
      */
     public function show($slug)
     {
-        $comserv = CommunityService::where('slug', $slug)->first();
-        return view('pengabdian/show', compact('comserv'));
-        // return $comserv;
+        $comserv = CommunityService::where('slug', $slug)->where('status', 'published')->firstOrFail();
+        $terkait = CommunityService::where('status', 'published')
+                    ->where('id', '!=', $comserv->id)
+                    ->orderBy('tanggal', 'desc')
+                    ->take(4)->get();
+                    
+        return view('pengabdian/show', compact('comserv', 'terkait'));
     }
 
     /**

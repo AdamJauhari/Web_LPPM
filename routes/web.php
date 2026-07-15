@@ -18,6 +18,10 @@ use App\Mail\DemoEmail;
 // Home
 Route::get('/', 'HomeController@index');
 
+// Berita
+Route::get('/berita', 'BeritaController@index');
+Route::get('/berita/{slug}', 'BeritaController@show');
+
 // Tentang LPPM
 Route::get('/tentang', function () {
     $orgMembers = DB::table('organization_members')->orderBy('sort_order')->get();
@@ -72,6 +76,14 @@ Route::get('/admin/successlogin/pengabdian', 'AdminController@pengabdian');
 Route::get('/admin/successlogin/publikasi', 'AdminController@publikasi');
 Route::get('/admin/successlogin/kepakaran', 'AdminController@kepakaran');
 Route::get('/admin/logout', 'AdminController@logout');
+
+// Admin Berita (SSR CRUD)
+Route::get('/admin/successlogin/berita', 'BeritaController@adminIndex');
+Route::get('/admin/successlogin/berita/create', 'BeritaController@adminCreate');
+Route::post('/admin/successlogin/berita', 'BeritaController@adminStore');
+Route::get('/admin/successlogin/berita/{id}/edit', 'BeritaController@adminEdit');
+Route::put('/admin/successlogin/berita/{id}', 'BeritaController@adminUpdate');
+Route::delete('/admin/successlogin/berita/{id}', 'BeritaController@adminDestroy');
 
 // Admin Kelola Publikasi (Data Publikasi Dosen)
 Route::get('/admin/successlogin/kelola-publikasi', 'AdminController@kelolaPublikasi');

@@ -1,125 +1,133 @@
 @extends('layout/main')
-    
-@section('title', 'Penelitian')
+
+@section('title', 'Penelitian LPPM - Universitas Cendekia Abditama')
 
 @section('container')
-    <section class="hero-banner d-flex align-items-center">
-        <div class="container text-center">
-            <h2>Penelitian</h2>
-        </div>
-    </section>
 
-    <section class="blog_area area-padding">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 mb-5 mb-lg-0">
-                    <div class="blog_left_sidebar">
-                        <!-- Deskripsi Halaman Penelitian -->
-                        <div style="background: #f0f7f2; border-left: 4px solid #1a4d2e; border-radius: 0 8px 8px 0; padding: 25px 30px; margin-bottom: 35px;">
-                            <h4 style="color: #1a4d2e; font-size: 18px; font-weight: 700; margin-bottom: 10px;">
-                                <i class="fas fa-flask" style="margin-right: 8px;"></i>Tentang Penelitian
-                            </h4>
-                            <p style="color: #555; font-size: 14px; line-height: 24px; margin-bottom: 0;">
-                                Halaman ini menampilkan daftar kegiatan penelitian yang dilakukan oleh dosen dan peneliti 
-                                Universitas Cendekia Abditama. Penelitian yang dipublikasikan mencakup berbagai bidang ilmu 
-                                sesuai dengan program studi yang tersedia di universitas. Setiap penelitian telah melalui 
-                                proses review dan persetujuan oleh LPPM.
-                            </p>
-                        </div>
-
-                        @if(Auth::check())
-                        <div style="display:flex; gap:10px; margin-bottom:25px; flex-wrap:wrap;">
-                            <a href="{{ url('/ajukan-penelitian') }}" style="display:inline-flex; align-items:center; gap:6px; background:#1a4d2e; color:#fff; padding:10px 20px; border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:.2s;" onmouseover="this.style.background='#2d6b42'" onmouseout="this.style.background='#1a4d2e'">
-                                <i class="fas fa-paper-plane"></i> Ajukan Proposal Penelitian
-                            </a>
-                        </div>
-                        @endif
-
-                        @forelse( $researches as $rsc )
-                        <article class="blog_item">
-                            <div class="blog_item_img">
-                                @if ($rsc->thumbnail)
-                                    <img class="card-img rounded-0" src="img/penelitian/{{ $rsc->thumbnail }}" alt="">
-                                @else
-                                    <img class="card-img rounded-0" src="img/blog/causes/causes-2.jpg" alt="">
-                                @endif
-                                
-                                <a href="/penelitian/{{ $rsc->slug }}" class="blog_item_date">
-                                    <h3>{{ $rsc->date }}</h3>
-                                </a>
-                            </div>
-                        
-                            <div class="blog_details">
-                                <a class="d-inline-block" href="/penelitian/{{ $rsc->slug }}">
-                                    <h2>{{ $rsc->title }}</h2>
-                                </a>
-                                <p>{{ $rsc->description }} <a href="/penelitian/{{ $rsc->slug }}" class="blog_item_date">read more</a></p>
-                                <ul class="blog-info-link">
-                                    <li><i class="far fa-user"></i> {{ $rsc->author }}</li>
-                                </ul>
-                            </div>
-                        </article>
-                        @empty
-                        <!-- Empty State -->
-                        <div style="text-align: center; padding: 60px 30px; background: #fff; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.05);">
-                            <div style="width: 100px; height: 100px; background: #e8f0eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
-                                <i class="fas fa-microscope" style="font-size: 40px; color: #1a4d2e;"></i>
-                            </div>
-                            <h4 style="color: #1d1d1d; font-size: 20px; margin-bottom: 12px;">Belum Ada Penelitian</h4>
-                            <p style="color: #888; font-size: 14px; max-width: 400px; margin: 0 auto 20px; line-height: 24px;">
-                                Saat ini belum ada data penelitian yang dipublikasikan. 
-                                Data penelitian akan muncul di sini setelah ditambahkan oleh administrator melalui panel admin.
-                            </p>
-                            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                                <a href="{{ url('/') }}" style="color: #fff; background: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; padding: 10px 24px; border-radius: 6px;">
-                                    <i class="fas fa-home" style="margin-right: 6px;"></i>Kembali ke Beranda
-                                </a>
-                                <a href="{{ url('/pengabdian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none; border: 1px solid #1a4d2e; padding: 10px 24px; border-radius: 6px;">
-                                    Lihat Pengabdian →
-                                </a>
-                            </div>
-                        </div>
-                        @endforelse
-                    
-                        <nav class="blog-pagination justify-content-center d-flex">
-                            <ul class="pagination">
-                                <li class="page-item">
-                                    {{ $researches->links() }}
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="blog_right_sidebar">
-                        <aside class="single_sidebar_widget post_category_widget">
-                            <h4 class="widget_title">Category</h4>
-                            <ul class="list cat-list">
-                                <li>
-                                    <a href="{{ url('/penelitian') }}" class="d-flex">
-                                        <p>Penelitian</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ url('/pengabdian') }}" class="d-flex">
-                                        <p>Pengabdian Kepada Masyarakat</p>
-                                    </a>
-                                </li>
-                                <li>
-                                    <!-- <a href="{{ url('/forkomil-dan-conferences') }}" class="d-flex"> -->
-                                        <p>Forum Komunikasi Ilmiah dan Conferences</p>
-                                    <!-- </a> -->
-                                </li>
-                            </ul>
-                        </aside>
-
-                        
-                    </div>
-                </div>
+{{-- Page Header --}}
+<section style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6b42 100%); padding: 60px 0 40px; margin-bottom: 0;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb" style="margin-bottom: 12px;">
+                    <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0;">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Beranda</a></li>
+                        <li class="breadcrumb-item active" style="color: #c4992a;">Penelitian</li>
+                    </ol>
+                </nav>
+                <h1 style="color: #fff; font-size: 36px; font-weight: 800; margin: 0 0 10px;">Berita Penelitian LPPM</h1>
+                <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 15px;">Informasi terkini seputar kegiatan dan hasil penelitian LPPM UCA</p>
+            </div>
+            <div class="col-lg-4 text-right d-none d-lg-block">
+                <i class="fas fa-flask" style="font-size: 80px; color: rgba(255,255,255,0.12);"></i>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+{{-- Filter Bar --}}
+<section style="background: #fff; padding: 24px 0; border-bottom: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+    <div class="container">
+        <form method="GET" action="{{ url('/penelitian') }}" class="d-flex flex-wrap align-items-center gap-2" style="gap: 12px;">
+            {{-- Pencarian --}}
+            <div style="flex: 1; min-width: 220px; position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                <input type="text" name="q" value="{{ request('q') }}" placeholder="Cari penelitian..."
+                    style="width: 100%; padding: 9px 12px 9px 36px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none;">
+            </div>
+            {{-- Filter Kategori --}}
+            <select name="kategori" style="padding: 9px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; color: #555; outline: none; background: #fff;">
+                <option value="">Semua Kategori</option>
+                @foreach($kategoriList as $kat)
+                    <option value="{{ $kat }}" {{ request('kategori') == $kat ? 'selected' : '' }}>{{ $kat }}</option>
+                @endforeach
+            </select>
+            <button type="submit" style="background: #1a4d2e; color: #fff; border: none; padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+            @if(request('q') || request('kategori'))
+            <a href="{{ url('/penelitian') }}" style="color: #888; font-size: 13px; text-decoration: none; padding: 9px 10px;"><i class="fas fa-times"></i> Reset</a>
+            @endif
+        </form>
+    </div>
+</section>
+
+{{-- Daftar Penelitian --}}
+<section style="padding: 50px 0; background: #f9fafb; min-height: 60vh;">
+    <div class="container">
+
+        @if($researches->isEmpty())
+        <div style="text-align: center; padding: 80px 0; color: #aaa;">
+            <i class="fas fa-flask" style="font-size: 60px; margin-bottom: 16px; display: block; color: #ddd;"></i>
+            <h4 style="color: #bbb; font-weight: 500;">Belum ada penelitian yang tersedia.</h4>
+            @if(request('q') || request('kategori'))
+            <a href="{{ url('/penelitian') }}" style="color: #1a4d2e; text-decoration: none; font-size: 14px; margin-top: 8px; display: inline-block;">← Lihat semua penelitian</a>
+            @endif
+        </div>
+        @else
+
+        <div class="row">
+            @foreach($researches as $item)
+            <div class="col-md-6 col-lg-4 mb-4">
+                <a href="{{ url('/penelitian/' . $item->slug) }}" style="text-decoration: none; display: block; height: 100%;">
+                    <div style="background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); transition: all 0.3s ease; height: 100%; display: flex; flex-direction: column;"
+                         onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.12)'"
+                         onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.06)'">
+
+                        {{-- Gambar --}}
+                        <div style="position: relative; overflow: hidden; height: 190px; background: linear-gradient(135deg, #1a4d2e, #2d6b42);">
+                            @if($item->thumbnail)
+                                <img src="{{ asset('img/penelitian/' . $item->thumbnail) }}" alt="{{ $item->title }}"
+                                    style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;"
+                                    onmouseover="this.style.transform='scale(1.05)'"
+                                    onmouseout="this.style.transform=''">
+                            @else
+                                <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-flask" style="font-size: 48px; color: rgba(255,255,255,0.3);"></i>
+                                </div>
+                            @endif
+                            {{-- Badge Kategori --}}
+                            <span style="position: absolute; top: 12px; left: 12px; background: #c4992a; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                {{ $item->kategori ?? 'Penelitian' }}
+                            </span>
+                        </div>
+
+                        {{-- Konten Card --}}
+                        <div style="padding: 20px; flex: 1; display: flex; flex-direction: column;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                                <i class="fas fa-calendar-alt" style="color: #aaa; font-size: 12px;"></i>
+                                <span style="color: #aaa; font-size: 12px;">{{ $item->tanggal ? $item->tanggal->format('d M Y') : \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                                @if($item->penulis || $item->author)
+                                <span style="color: #ddd;">•</span>
+                                <i class="fas fa-user" style="color: #aaa; font-size: 12px;"></i>
+                                <span style="color: #aaa; font-size: 12px;">{{ $item->penulis ?? $item->author }}</span>
+                                @endif
+                            </div>
+                            <h5 style="color: #1a1a1a; font-size: 15px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; flex: 1;">
+                                {{ Str::limit($item->title, 70) }}
+                            </h5>
+                            <p style="color: #777; font-size: 13px; line-height: 1.6; margin-bottom: 16px;">
+                                {{ $item->ringkasan_auto }}
+                            </p>
+                            <div style="margin-top: auto;">
+                                <span style="color: #1a4d2e; font-size: 13px; font-weight: 600;">
+                                    Baca Selengkapnya <i class="fas fa-arrow-right" style="font-size: 11px;"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
+
+        {{-- Pagination --}}
+        <div class="d-flex justify-content-center mt-4">
+            {{ $researches->links() }}
+        </div>
+
+        @endif
+    </div>
+</section>
 
 @endsection
-
-    

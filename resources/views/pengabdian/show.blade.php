@@ -1,183 +1,134 @@
-@extends('layout/pengabdian')
+@extends('layout/main')
+
+@section('title', $comserv->title . ' - Pengabdian LPPM UCA')
 
 @section('container')
-    <div class="col-lg-8 posts-list">
-        <div class="single-post">
-            <div class="feature-img">
-                @if ($comserv->thumbnail)
-                    <img class="card-img rounded-0" src="../img/pengabdian/{{ $comserv->thumbnail }}" alt="">
-                @else
-                    <img class="card-img rounded-0" src="../img/blog/causes/causes-2.jpg" alt="">
-                @endif
-            </div>
-            <div class="blog_details">
-                <h2>{{ $comserv->title }}</h2>
-                <ul class="blog-info-link mt-3 mb-4">
-                    <li><i class="far fa-user"></i> {{ $comserv->author }}</li>
-                    <li><i class="far fa-calendar"></i> {{ $comserv->date }}</li>
-                </ul>
-                <p class="excert" style="white-space:pre-line">{{ $comserv->description }}</p>
-            </div>
-        </div>
 
-        <!-- <div class="blog-author">
-            <div class="media align-items-center">
-                <img src="img/blog/author.png" alt="">
-                <div class="media-body">
-                    <a href="#">
-                        <h4>Harvard milan</h4>
+{{-- Page Header --}}
+<section style="background: linear-gradient(135deg, #1a4d2e 0%, #2d6b42 100%); padding: 50px 0 35px;">
+    <div class="container">
+        <nav aria-label="breadcrumb" style="margin-bottom: 16px;">
+            <ol class="breadcrumb" style="background: transparent; padding: 0; margin: 0;">
+                <li class="breadcrumb-item"><a href="{{ url('/') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Beranda</a></li>
+                <li class="breadcrumb-item"><a href="{{ url('/pengabdian') }}" style="color: rgba(255,255,255,0.7); text-decoration: none;">Pengabdian</a></li>
+                <li class="breadcrumb-item active" style="color: #c4992a;">{{ Str::limit($comserv->title, 40) }}</li>
+            </ol>
+        </nav>
+        <span style="background: #c4992a; color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-bottom: 14px;">
+            {{ $comserv->kategori ?? 'Pengabdian' }}
+        </span>
+        <h1 style="color: #fff; font-size: 30px; font-weight: 800; line-height: 1.4; margin: 0 0 14px; max-width: 800px;">{{ $comserv->title }}</h1>
+        <div style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.75); font-size: 13px;">
+                <i class="fas fa-calendar-alt"></i>
+                <span>{{ $comserv->tanggal ? $comserv->tanggal->format('d F Y') : \Carbon\Carbon::parse($comserv->created_at)->format('d F Y') }}</span>
+            </div>
+            @if($comserv->penulis || $comserv->author)
+            <div style="display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.75); font-size: 13px;">
+                <i class="fas fa-user-edit"></i>
+                <span>{{ $comserv->penulis ?? $comserv->author }}</span>
+            </div>
+            @endif
+        </div>
+    </div>
+</section>
+
+{{-- Konten Utama --}}
+<section style="padding: 50px 0; background: #f9fafb;">
+    <div class="container">
+        <div class="row">
+
+            {{-- Konten Pengabdian --}}
+            <div class="col-lg-8 mb-4">
+                <div style="background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.07);">
+
+                    {{-- Gambar Utama --}}
+                    @if($comserv->thumbnail)
+                    <div style="overflow: hidden; max-height: 420px;">
+                        <img src="{{ asset('img/pengabdian/' . $comserv->thumbnail) }}" alt="{{ $comserv->title }}"
+                            style="width: 100%; object-fit: cover; max-height: 420px;">
+                    </div>
+                    @endif
+
+                    {{-- Ringkasan --}}
+                    @if($comserv->ringkasan)
+                    <div style="padding: 28px 32px 0;">
+                        <p style="font-size: 16px; line-height: 1.8; color: #444; border-left: 4px solid #c4992a; padding-left: 16px; margin: 0; font-style: italic;">
+                            {{ $comserv->ringkasan }}
+                        </p>
+                    </div>
+                    @endif
+
+                    {{-- Isi Pengabdian --}}
+                    <div style="padding: 28px 32px 36px;">
+                        <div class="berita-konten" style="font-size: 15px; line-height: 1.9; color: #333;">
+                            {!! nl2br(e($comserv->body)) !!}
+                        </div>
+                    </div>
+
+                    {{-- Footer Card --}}
+                    <div style="padding: 16px 32px; border-top: 1px solid #f0f0f0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span style="color: #aaa; font-size: 13px;">
+                            <i class="fas fa-clock"></i> Dipublikasikan {{ $comserv->tanggal ? $comserv->tanggal->format('d M Y') : \Carbon\Carbon::parse($comserv->created_at)->format('d M Y') }}
+                        </span>
+                        <a href="{{ url('/pengabdian') }}" style="color: #1a4d2e; font-size: 13px; font-weight: 600; text-decoration: none;">
+                            <i class="fas fa-arrow-left"></i> Kembali ke Daftar Pengabdian
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Sidebar --}}
+            <div class="col-lg-4">
+
+                {{-- Pengabdian Terkait --}}
+                @if($terkait->isNotEmpty())
+                <div style="background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 24px;">
+                    <h5 style="color: #1a4d2e; font-weight: 700; font-size: 15px; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0;">
+                        <i class="fas fa-list-ul" style="color: #c4992a;"></i> Pengabdian Terkait
+                    </h5>
+                    @foreach($terkait as $item)
+                    <a href="{{ url('/pengabdian/' . $item->slug) }}" style="display: flex; gap: 12px; margin-bottom: 16px; text-decoration: none;"
+                       onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                        <div style="width: 60px; height: 60px; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: linear-gradient(135deg, #1a4d2e, #2d6b42);">
+                            @if($item->thumbnail)
+                                <img src="{{ asset('img/pengabdian/' . $item->thumbnail) }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                            @else
+                                <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-hands-helping" style="color: rgba(255,255,255,0.4); font-size: 20px;"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div>
+                            <p style="color: #222; font-size: 13px; font-weight: 600; line-height: 1.4; margin: 0 0 4px;">{{ Str::limit($item->title, 60) }}</p>
+                            <span style="color: #aaa; font-size: 11px;"><i class="fas fa-calendar-alt"></i> {{ $item->tanggal ? $item->tanggal->format('d M Y') : \Carbon\Carbon::parse($item->created_at)->format('d M Y') }}</span>
+                        </div>
                     </a>
-                    <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he our dominion twon Second divided from</p>
+                    @endforeach
                 </div>
+                @endif
+
+                {{-- Navigasi Kategori --}}
+                <div style="background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);">
+                    <h5 style="color: #1a4d2e; font-weight: 700; font-size: 15px; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0;">
+                        <i class="fas fa-tags" style="color: #c4992a;"></i> Kategori Pengabdian
+                    </h5>
+                    @foreach(\App\CommunityService::where('status', 'published')->whereNotNull('kategori')->distinct()->pluck('kategori') as $kat)
+                    @php $count = \App\CommunityService::where('status', 'published')->where('kategori', $kat)->count(); @endphp
+                    @if($count > 0)
+                    <a href="{{ url('/pengabdian?kategori=' . $kat) }}"
+                       style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; text-decoration: none; border-bottom: 1px solid #f5f5f5; color: #555; font-size: 14px;"
+                       onmouseover="this.style.color='#1a4d2e'" onmouseout="this.style.color='#555'">
+                        <span><i class="fas fa-chevron-right" style="font-size: 10px; color: #c4992a; margin-right: 6px;"></i>{{ $kat }}</span>
+                        <span style="background: #f0f4f1; color: #1a4d2e; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600;">{{ $count }}</span>
+                    </a>
+                    @endif
+                    @endforeach
+                </div>
+
             </div>
-        </div> -->
-
-        <!-- <div class="comments-area">
-            <h4>05 Comments</h4>
-            <div class="comment-list">
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                            <img src="img/blog/c1.png" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser 
-                            </p>
-
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <h5>
-                                        <a href="#">Emilly Blunt</a>
-                                    </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-
-                                <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-list">
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                            <img src="img/blog/c2.png" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser 
-                            </p>
-
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <h5>
-                                        <a href="#">Emilly Blunt</a>
-                                    </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-
-                                <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-list">
-                <div class="single-comment justify-content-between d-flex">
-                    <div class="user justify-content-between d-flex">
-                        <div class="thumb">
-                            <img src="img/blog/c3.png" alt="">
-                        </div>
-                        <div class="desc">
-                            <p class="comment">
-                                Multiply sea night grass fourth day sea lesser rule open subdue female fill which them Blessed, give fill lesser bearing multiply sea night grass fourth day sea lesser 
-                            </p>
-
-                            <div class="d-flex justify-content-between">
-                                <div class="d-flex align-items-center">
-                                    <h5>
-                                        <a href="#">Emilly Blunt</a>
-                                    </h5>
-                                    <p class="date">December 4, 2017 at 3:12 pm </p>
-                                </div>
-
-                                <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">reply</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="comment-form">
-            <h4>Leave a Reply</h4>
-            <form class="form-contact comment_form" action="#" id="commentForm">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="Write Comment"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" name="name" id="name" type="text" placeholder="Name">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <input class="form-control" name="email" id="email" type="email" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="form-group">
-                            <input class="form-control" name="website" id="website" type="text" placeholder="Website">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="button button-contactForm">Send Message</button>
-                </div>
-            </form>
-        </div> -->
-            
-    </div>
-    <div class="col-lg-4">
-        <div class="blog_right_sidebar">
-            <aside class="single_sidebar_widget post_category_widget">
-                <h4 class="widget_title">Category</h4>
-                <ul class="list cat-list">
-                    <li>
-                        <a href="{{ url('/penelitian') }}" class="d-flex">
-                            <p>Penelitian</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/pengabdian') }}" class="d-flex">
-                            <p>Pengabdian Kepada Masyarakat</p>
-                        </a>
-                    </li>
-                    <li>
-                        <!-- <a href="{{ url('/forkomil-dan-conferences') }}" class="d-flex"> -->
-                            <p>Forum Komunikasi Ilmiah dan Conferences</p>
-                        <!-- </a> -->
-                    </li>
-                </ul>
-            </aside>
-
-            
         </div>
     </div>
-        
-@endsection
+</section>
 
-    
+@endsection
