@@ -29,6 +29,7 @@ try {
         password VARCHAR(255) NOT NULL,
         role VARCHAR(30) DEFAULT 'dosen',
         nim_nip VARCHAR(30) NULL,
+        username VARCHAR(255) NULL UNIQUE,
         nidn VARCHAR(20) NULL,
         fakultas VARCHAR(10) NULL,
         jabatan_fungsional VARCHAR(100) NULL,
@@ -38,6 +39,7 @@ try {
     )");
     // Tambah kolom baru jika belum ada (ALTER TABLE untuk existing database)
     $cols = array_column($pdo->query("PRAGMA table_info(users)")->fetchAll(PDO::FETCH_ASSOC), 'name');
+    if (!in_array('username', $cols))           $pdo->exec("ALTER TABLE users ADD COLUMN username VARCHAR(255) NULL");
     if (!in_array('nidn', $cols))               $pdo->exec("ALTER TABLE users ADD COLUMN nidn VARCHAR(20) NULL");
     if (!in_array('fakultas', $cols))           $pdo->exec("ALTER TABLE users ADD COLUMN fakultas VARCHAR(10) NULL");
     if (!in_array('jabatan_fungsional', $cols)) $pdo->exec("ALTER TABLE users ADD COLUMN jabatan_fungsional VARCHAR(100) NULL");

@@ -287,18 +287,20 @@ async function openEditModal(id) {
     if (cfg.reviewOnly) {
         let infoFields = [];
         if (currentSection === 'research_submissions') {
-            infoFields = ['title','research_type','abstract','team_members'];
+            infoFields = ['title','research_type','abstract','team_members','file'];
         } else if (currentSection === 'pkm_submissions') {
-            infoFields = ['judul','sumber_dana','abstrak','team_members'];
+            infoFields = ['judul','sumber_dana','abstrak','team_members','file'];
         } else if (currentSection === 'hki_submissions') {
-            infoFields = ['judul','jenis_hki','abstrak','team_members'];
+            infoFields = ['judul','jenis_hki','abstrak','team_members','file'];
         } else {
-            infoFields = ['title','journal_name','abstract','authors'];
+            infoFields = ['title','journal_name','abstract','authors','file'];
         }
         
         html += '<div style="background:#f8f9fa;border-radius:8px;padding:14px;margin-bottom:16px;border-left:4px solid #1a4d2e">';
         html += '<strong style="color:#1a4d2e;font-size:12px;text-transform:uppercase">Detail Ajuan</strong>';
         infoFields.forEach(f => {
+            if (data[f] === undefined && f === 'file') return; // Skip if file field doesn't exist
+            
             let label = f.charAt(0).toUpperCase() + f.slice(1);
             if (f === 'research_type') label = 'Jenis';
             if (f === 'team_members') label = 'Anggota Tim';
@@ -308,8 +310,17 @@ async function openEditModal(id) {
             if (f === 'sumber_dana') label = 'Sumber Dana';
             if (f === 'jenis_hki') label = 'Jenis HKI';
             if (f === 'abstrak') label = 'Abstrak';
+            if (f === 'file') label = 'File Lampiran';
             
-            html += `<div style="margin-top:8px"><small style="color:#888">${label}</small><div style="font-size:13px;color:#333">${data[f] || '-'}</div></div>`;
+            let valRender = data[f] || '-';
+            
+            if (f === 'file' && data[f]) {
+                let downloadUrl = API_URL + '/uploads/journals/' + data[f];
+                if (currentSection === 'research_submissions') downloadUrl = API_URL + '/uploads/research/' + data[f];
+                valRender = `<a href="${downloadUrl}" target="_blank" class="badge btn-gold" style="padding:4px 8px;border-radius:4px;text-decoration:none;color:#fff;background:#c4992a;display:inline-block;margin-top:4px;"><i class="fas fa-file-download"></i> Buka / Download File</a>`;
+            }
+
+            html += `<div style="margin-top:8px"><small style="color:#888">${label}</small><div style="font-size:13px;color:#333">${valRender}</div></div>`;
         });
         html += '</div><hr style="border-color:#eee">';
     }
