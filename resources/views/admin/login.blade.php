@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Admin - LPPM UCA</title>
+    <title>Login - LPPM UCA</title>
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
     <link href="{{asset('vendors/fontawesome/css/all.min.css')}}" rel="stylesheet">
     <style>
@@ -52,19 +52,19 @@
         .login-card {
             background: rgba(255, 255, 255, 0.97);
             border-radius: 20px;
-            padding: 45px 40px;
+            padding: 40px 35px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
         .login-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .login-logo img {
             width: 80px;
             height: 80px;
             border-radius: 16px;
             object-fit: cover;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .login-logo h2 {
@@ -77,7 +77,7 @@
             color: #999;
             font-size: 13px;
         }
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom: 18px; }
         .form-group label {
             color: #1a4d2e;
             font-size: 13px;
@@ -124,7 +124,7 @@
             color: #fff;
             border: none;
             border-radius: 12px;
-            padding: 14px;
+            padding: 13px;
             font-size: 15px;
             font-weight: 600;
             letter-spacing: 0.5px;
@@ -138,9 +138,15 @@
             box-shadow: 0 6px 20px rgba(26, 77, 46, 0.4);
         }
         .btn-login:active { transform: translateY(0); }
+        .btn-register-dosen:hover {
+            background: #c4992a !important;
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(196, 153, 42, 0.3);
+        }
         .back-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 18px;
         }
         .back-link a {
             color: #999;
@@ -157,20 +163,7 @@
             margin-bottom: 15px;
         }
         .alert-danger { background: #fef2f2; color: #dc3545; border: 1px solid #fecaca; }
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 20px 0;
-            color: #ccc;
-            font-size: 12px;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: #e8e8e8;
-        }
-        .divider span { padding: 0 12px; }
+        .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
     </style>
 </head>
 <body>
@@ -178,12 +171,19 @@
         <div class="login-card">
             <div class="login-logo">
                 <img src="{{ asset('img/logo-uca.jpg') }}" alt="Logo UCA">
-                <h2>LPPM User</h2>
+                <h2>LPPM Mahasiswa</h2>
                 <p>Universitas Cendekia Abditama</p>
             </div>
 
             @if(isset(Auth::user()->email))
                 <script>window.location="/login/successlogin";</script>
+            @endif
+
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle" style="margin-right: 6px;"></i>
+                    <strong>{{ $message }}</strong>
+                </div>
             @endif
 
             @if ($message = Session::get('error'))
@@ -221,6 +221,16 @@
                     <i class="fas fa-sign-in-alt" style="margin-right: 6px;"></i>Masuk
                 </button>
             </form>
+
+            <div class="dosen-register-box" style="margin-top: 22px; padding-top: 18px; border-top: 1px solid #edf2f7; text-align: center;">
+                <p style="font-size: 12px; color: #64748b; margin-bottom: 8px; font-weight: 500;">Bagi Dosen yang belum memiliki akun:</p>
+                <a href="{{ url('/daftar-dosen') }}" class="btn-register-dosen" style="display: flex; align-items: center; justify-content: center; width: 100%; padding: 11px 16px; border: 2px solid #c4992a; border-radius: 12px; color: #c4992a; font-weight: 600; font-size: 13.5px; text-decoration: none; transition: all 0.3s ease; background: #fff;">
+                    <i class="fas fa-user-tie" style="margin-right: 8px;"></i>Daftar Akun Dosen
+                </a>
+                <small style="display: block; color: #94a3b8; font-size: 11px; margin-top: 8px;">
+                    <i class="fas fa-shield-alt" style="margin-right: 4px; color: #c4992a;"></i>Memerlukan persetujuan (approval) Admin LPPM
+                </small>
+            </div>
 
             <div class="back-link">
                 <a href="{{ url('/') }}"><i class="fas fa-arrow-left"></i>Kembali ke Beranda</a>

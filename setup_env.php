@@ -48,7 +48,7 @@ $foundKey   = false;
 foreach ($lines as $line) {
     // Deteksi DB_DATABASE (termasuk yang dikomentari)
     if (preg_match('/^#?\s*DB_DATABASE\s*=/', $line)) {
-        $newLines[] = 'DB_DATABASE=' . $sqlitePathForEnv;
+        $newLines[] = 'DB_DATABASE="' . $sqlitePathForEnv . '"';
         $foundDb    = true;
         echo "[OK] DB_DATABASE diset: $sqlitePathForEnv\n";
     }
@@ -72,7 +72,7 @@ foreach ($lines as $line) {
 
 // Tambahkan jika tidak ditemukan
 if (!$foundDb) {
-    $newLines[] = 'DB_DATABASE=' . $sqlitePathForEnv;
+    $newLines[] = 'DB_DATABASE="' . $sqlitePathForEnv . '"';
     echo "[OK] DB_DATABASE ditambahkan: $sqlitePathForEnv\n";
 }
 if (!$foundConn) {

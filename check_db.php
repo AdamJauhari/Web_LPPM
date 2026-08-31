@@ -6,7 +6,7 @@ $dbPath  = null;
 if (file_exists($envFile)) {
     foreach (file($envFile, FILE_IGNORE_NEW_LINES) as $line) {
         if (preg_match('/^DB_DATABASE=(.+)/', $line, $m)) {
-            $dbPath = trim($m[1]);
+            $dbPath = trim(trim($m[1]), '"\'');
             break;
         }
     }

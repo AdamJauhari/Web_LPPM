@@ -6,7 +6,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-7">
                 <div class="submission-card">
-                    <div class="submission-header">
+                    <div class="submission-header" style="position: relative;">
+                        <a href="{{ url('/jurnal-saya') }}" class="btn-back-header" title="Kembali ke Jurnal Saya">
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
                         <i class="fas fa-file-alt"></i>
                         <h2>Ajukan Jurnal Penelitian</h2>
                         <p>Submit jurnal penelitian Anda untuk ditinjau</p>
@@ -44,6 +47,10 @@
                             <small style="color:#888; font-size:11px;">Format: PDF, Maks: 10MB</small>
                         </div>
                         <div class="form-group">
+                            <label><i class="fas fa-align-left"></i> Abstrak</label>
+                            <textarea name="abstrak" class="form-control" rows="4" placeholder="Tuliskan atau tempelkan ringkasan / abstrak jurnal Anda di sini..." style="resize: vertical; min-height: 90px;">{{ old('abstrak') }}</textarea>
+                        </div>
+                        <div class="form-group">
                             <label><i class="fas fa-users"></i> Penulis</label>
                             <input type="text" name="authors" class="form-control" value="{{ old('authors') }}" placeholder="Pisahkan dengan koma">
                         </div>
@@ -71,9 +78,35 @@
     border-radius: 50%;
 }
 .submission-card { background:rgba(255,255,255,.97); border-radius:16px; box-shadow:0 8px 40px rgba(0,0,0,.2); overflow:hidden; position:relative; z-index:1; }
-.submission-header { background:linear-gradient(135deg,#1a4d2e,#2d6b42); padding:30px; text-align:center; color:#fff; }
-.submission-header i { font-size:36px; color:#c4992a; margin-bottom:10px; }
+.submission-header { background:linear-gradient(135deg,#1a4d2e,#2d6b42); padding:30px; text-align:center; color:#fff; position:relative; }
+.submission-header > i { font-size:36px; color:#c4992a; margin-bottom:10px; }
 .submission-header h2 { font-size:22px; margin:0; } .submission-header p { color:rgba(255,255,255,.7); font-size:13px; margin-top:4px; }
+.btn-back-header {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff !important;
+    font-size: 15px;
+    text-decoration: none !important;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    z-index: 10;
+}
+.btn-back-header:hover {
+    background: #c4992a;
+    transform: translateX(-3px);
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(196, 153, 42, 0.4);
+}
+.btn-back-header i { margin: 0 !important; font-size: 14px !important; }
 .submission-form { padding:24px; }
 .submission-form .form-group { margin-bottom:16px; }
 .submission-form label { font-weight:600; font-size:13px; color:#333; margin-bottom:4px; display:block; }

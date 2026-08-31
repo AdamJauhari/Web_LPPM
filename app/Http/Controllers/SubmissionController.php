@@ -64,12 +64,16 @@ class SubmissionController extends Controller
             $request->file('file')->move(public_path('uploads/journals'), $fileName);
         }
 
+        $abstrak = $request->abstrak ?? $request->abstract ?? null;
+
         DB::table('journal_submissions')->insert([
             'user_id' => Auth::id(),
             'title' => $request->title,
             'file' => $fileName,
             'journal_name' => $request->journal_name,
             'authors' => $request->authors,
+            'abstrak' => $abstrak,
+            'abstract' => $abstrak,
             'status' => 'pending',
             'created_at' => now(),
             'updated_at' => now(),

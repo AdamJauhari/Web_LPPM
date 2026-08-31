@@ -160,6 +160,7 @@ Route::get('/hakcipta', function () {
 Route::prefix('api/admin')->group(function () {
     Route::post('/verify', 'AdminApiController@verify');
     Route::get('/stats', 'AdminApiController@stats');
+    Route::get('/references', 'AdminApiController@references');
     Route::post('/upload-photo', 'AdminApiController@uploadPhoto');
     Route::post('/upload-file', 'AdminApiController@uploadFile');
     Route::get('/list/{table}', 'AdminApiController@list');

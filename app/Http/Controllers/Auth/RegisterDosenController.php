@@ -77,11 +77,10 @@ class RegisterDosenController extends Controller
             'jabatan_fungsional' => $request->jabatan_fungsional,
             'password'           => bcrypt($request->password),
             'role'               => 'dosen',
+            'is_approved'        => 0, // Memerlukan persetujuan admin LPPM
         ]);
 
-        Auth::login($user);
-
-        return redirect('/dosen/dashboard')->with('success', 'Registrasi berhasil! Selamat datang, ' . $user->name . '.');
+        return redirect('/login')->with('success', 'Pendaftaran akun Dosen berhasil! Akun Anda saat ini berstatus PENDING dan memerlukan persetujuan (approval) dari Administrator LPPM sebelum dapat digunakan untuk login.');
     }
 
     /**

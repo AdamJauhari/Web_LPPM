@@ -49,31 +49,32 @@
                 <button class="menu-btn" data-section="researches" onclick="switchSection('researches')"><i class="fas fa-flask"></i> Penelitian</button>
                 <button class="menu-btn" data-section="community_services" onclick="switchSection('community_services')"><i class="fas fa-hands-helping"></i> Pengabdian</button>
                 <button class="menu-btn" data-section="publications" onclick="switchSection('publications')"><i class="fas fa-file-alt"></i> Publikasi</button>
-                <button class="menu-btn" data-section="organization_members" onclick="switchSection('organization_members')"><i class="fas fa-sitemap"></i> Struktur Organisasi</button>
-                <button class="menu-btn" data-section="users" onclick="switchSection('users')"><i class="fas fa-users"></i> Users</button>
+                <button class="menu-btn" data-section="organization_members" onclick="switchSection('organization_members')"><i class="fas fa-sitemap"></i> <span>Struktur Organisasi</span></button>
+                <button class="menu-btn" data-section="users" onclick="switchSection('users')"><i class="fas fa-users"></i> <span>Users</span><span id="badge-users" class="sidebar-badge" style="display:none">0</span></button>
                 <div class="sidebar-sep" style="margin:8px 8px;"></div>
                 <span style="color:rgba(255,255,255,.4);font-size:10px;padding:0 14px;text-transform:uppercase;letter-spacing:1px;">Data Dosen</span>
-                <button class="menu-btn" data-section="publikasis" onclick="switchSection('publikasis')"><i class="fas fa-book"></i> Data Publikasi</button>
-                <button class="menu-btn" data-section="pelaksanaans" onclick="switchSection('pelaksanaans')"><i class="fas fa-tasks"></i> Data Pelaksanaan</button>
+                <button class="menu-btn" data-section="publikasis" onclick="switchSection('publikasis')"><i class="fas fa-book"></i> <span>Data Publikasi</span></button>
+                <button class="menu-btn" data-section="pelaksanaans" onclick="switchSection('pelaksanaans')"><i class="fas fa-tasks"></i> <span>Data Pelaksanaan</span></button>
                 <div class="sidebar-sep" style="margin:8px 8px;"></div>
                 <span style="color:rgba(255,255,255,.4);font-size:10px;padding:0 14px;text-transform:uppercase;letter-spacing:1px;">Data Master</span>
-                <button class="menu-btn" data-section="fakultas" onclick="switchSection('fakultas')"><i class="fas fa-building"></i> Fakultas</button>
-                <button class="menu-btn" data-section="prodi" onclick="switchSection('prodi')"><i class="fas fa-graduation-cap"></i> Program Studi</button>
-                <button class="menu-btn" data-section="dosen" onclick="switchSection('dosen')"><i class="fas fa-chalkboard-teacher"></i> Dosen</button>
+                <button class="menu-btn" data-section="fakultas" onclick="switchSection('fakultas')"><i class="fas fa-building"></i> <span>Fakultas</span></button>
+                <button class="menu-btn" data-section="prodi" onclick="switchSection('prodi')"><i class="fas fa-graduation-cap"></i> <span>Program Studi</span></button>
+                <button class="menu-btn" data-section="dosen" onclick="switchSection('dosen')"><i class="fas fa-chalkboard-teacher"></i> <span>Dosen</span></button>
                 <div class="sidebar-sep" style="margin:8px 8px;"></div>
                 <span style="color:rgba(255,255,255,.4);font-size:10px;padding:0 14px;text-transform:uppercase;letter-spacing:1px;">Data LPPM (Formal)</span>
-                <button class="menu-btn" data-section="penelitian" onclick="switchSection('penelitian')"><i class="fas fa-flask"></i> Penelitian Formal</button>
-                <button class="menu-btn" data-section="pengajuan_proposal" onclick="switchSection('pengajuan_proposal')"><i class="fas fa-file-invoice"></i> Pengajuan Proposal</button>
-                <button class="menu-btn" data-section="verifikasi_penelitian" onclick="switchSection('verifikasi_penelitian')"><i class="fas fa-check-circle"></i> Verifikasi Penelitian</button>
-                <button class="menu-btn" data-section="hki" onclick="switchSection('hki')"><i class="fas fa-certificate"></i> HKI (Formal)</button>
-                <button class="menu-btn" data-section="laporan_sidang" onclick="switchSection('laporan_sidang')"><i class="fas fa-gavel"></i> Laporan Sidang</button>
-                <button class="menu-btn" data-section="laporan_jurnal" onclick="switchSection('laporan_jurnal')"><i class="fas fa-journal-whills"></i> Laporan Jurnal</button>
+                <button class="menu-btn" data-section="penelitian" onclick="switchSection('penelitian')"><i class="fas fa-flask"></i> <span>Penelitian Formal</span></button>
+                <button class="menu-btn" data-section="pengajuan_proposal" onclick="switchSection('pengajuan_proposal')"><i class="fas fa-file-invoice"></i> <span>Pengajuan Proposal</span><span id="badge-pengajuan_proposal" class="sidebar-badge" style="display:none">0</span></button>
+                <button class="menu-btn" data-section="verifikasi_penelitian" onclick="switchSection('verifikasi_penelitian')"><i class="fas fa-check-circle"></i> <span>Verifikasi Penelitian</span></button>
+                <button class="menu-btn" data-section="hki" onclick="switchSection('hki')"><i class="fas fa-certificate"></i> <span>HKI (Formal)</span></button>
+                <button class="menu-btn" data-section="laporan_sidang" onclick="switchSection('laporan_sidang')"><i class="fas fa-gavel"></i> <span>Laporan Sidang</span></button>
+                <button class="menu-btn" data-section="laporan_jurnal" onclick="switchSection('laporan_jurnal')"><i class="fas fa-journal-whills"></i> <span>Laporan Jurnal</span></button>
                 <div class="sidebar-sep" style="margin:8px 8px;"></div>
                 <span style="color:rgba(255,255,255,.4);font-size:10px;padding:0 14px;text-transform:uppercase;letter-spacing:1px;">Ajuan Masuk (User)</span>
-                <button class="menu-btn" data-section="research_submissions" onclick="switchSection('research_submissions')"><i class="fas fa-paper-plane"></i> Ajuan Proposal</button>
-                <button class="menu-btn" data-section="pkm_submissions" onclick="switchSection('pkm_submissions')"><i class="fas fa-hands-helping"></i> Ajuan PKM</button>
-                <button class="menu-btn" data-section="hki_submissions" onclick="switchSection('hki_submissions')"><i class="fas fa-certificate"></i> Ajuan HKI</button>
-                <button class="menu-btn" data-section="journal_submissions" onclick="switchSection('journal_submissions')"><i class="fas fa-journal-whills"></i> Ajuan Jurnal (SINTA)</button>
+                <button class="menu-btn" data-section="pending_users" onclick="switchSection('pending_users')"><i class="fas fa-user-clock"></i> <span>Persetujuan Dosen</span><span id="badge-pending_users" class="sidebar-badge" style="display:none">0</span></button>
+                <button class="menu-btn" data-section="research_submissions" onclick="switchSection('research_submissions')"><i class="fas fa-paper-plane"></i> <span>Ajuan Proposal</span><span id="badge-research_submissions" class="sidebar-badge" style="display:none">0</span></button>
+                <button class="menu-btn" data-section="pkm_submissions" onclick="switchSection('pkm_submissions')"><i class="fas fa-hands-helping"></i> <span>Ajuan PKM</span><span id="badge-pkm_submissions" class="sidebar-badge" style="display:none">0</span></button>
+                <button class="menu-btn" data-section="hki_submissions" onclick="switchSection('hki_submissions')"><i class="fas fa-certificate"></i> <span>Ajuan HKI</span><span id="badge-hki_submissions" class="sidebar-badge" style="display:none">0</span></button>
+                <button class="menu-btn" data-section="journal_submissions" onclick="switchSection('journal_submissions')"><i class="fas fa-journal-whills"></i> <span>Ajuan Jurnal (SINTA)</span><span id="badge-journal_submissions" class="sidebar-badge" style="display:none">0</span></button>
             </div>
             <div class="sidebar-bottom">
                 <button class="menu-btn logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>

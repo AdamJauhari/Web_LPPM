@@ -57,6 +57,35 @@ class AdminApiController extends Controller
     }
 
     /**
+     * Get lookup references for foreign key IDs (users, fakultas, prodi, dosen, penelitian)
+     */
+    public function references(Request $request)
+    {
+        if (!$this->verifyToken($request)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $users = DB::table('users')->select('id', 'name', 'email', 'role', 'nidn', 'nim_nip')->orderBy('name')->get();
+        $fakultas = \Schema::hasTable('fakultas') ? DB::table('fakultas')->select('id', 'nama_fakultas')->orderBy('nama_fakultas')->get() : [];
+        $prodi = \Schema::hasTable('prodi') ? DB::table('prodi')->select('id', 'nama_prodi', 'fakultas_id')->orderBy('nama_prodi')->get() : [];
+        $dosen = \Schema::hasTable('dosen') ? DB::table('dosen')->select('id', 'nama_dosen', 'nidn', 'pangkat_jabatan')->orderBy('nama_dosen')->get() : [];
+        $penelitian = \Schema::hasTable('penelitian') ? DB::table('penelitian')->select('id', 'judul', 'tahun')->orderBy('id', 'desc')->get() : [];
+
+        // Fallback: if dosen table is empty, include users with role='dosen'
+        if (empty($dosen) || count($dosen) === 0) {
+            $dosen = DB::table('users')->where('role', 'dosen')->select('id', 'name as nama_dosen', 'nidn')->orderBy('name')->get();
+        }
+
+        return response()->json([
+            'users' => $users,
+            'fakultas' => $fakultas,
+            'prodi' => $prodi,
+            'dosen' => $dosen,
+            'penelitian' => $penelitian
+        ]);
+    }
+
+    /**
      * Upload photo for organization members
      */
     public function uploadPhoto(Request $request)
@@ -86,7 +115,7 @@ class AdminApiController extends Controller
             return response()->json(['error' => 'No file uploaded'], 400);
         }
 
-        $type = $request->input('type');
+        $type = $request->input('type', 'documents');
         $destination = '';
 
         if ($type === 'penelitian') {
@@ -97,13 +126,26 @@ class AdminApiController extends Controller
             $destination = 'download/publikasi';
         } elseif ($type === 'berita') {
             $destination = 'img/berita';
+        } elseif ($type === 'hki' || $type === 'file_sertifikat') {
+            $destination = 'uploads/hki';
+        } elseif ($type === 'laporan_jurnal' || $type === 'file_bukti') {
+            $destination = 'uploads/laporan_jurnal';
+        } elseif ($type === 'laporan_sidang' || $type === 'berita_acara_file') {
+            $destination = 'uploads/laporan_sidang';
+        } elseif ($type === 'dosen' || $type === 'sk_dosen' || $type === 'dosen_luaran') {
+            $destination = 'uploads/dosen';
         } else {
-            return response()->json(['error' => 'Invalid upload type'], 400);
+            $destination = 'uploads/documents';
+        }
+
+        $destPath = public_path($destination);
+        if (!file_exists($destPath)) {
+            @mkdir($destPath, 0777, true);
         }
 
         $file = $request->file('file');
         $filename = time() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file->getClientOriginalName());
-        $file->move(public_path($destination), $filename);
+        $file->move($destPath, $filename);
 
         return response()->json(['status' => 'ok', 'filename' => $filename]);
     }
@@ -116,6 +158,16 @@ class AdminApiController extends Controller
         if (!$this->verifyToken($request)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        $pendingDosen = DB::table('users')->where('role', 'dosen')->where(function($q) {
+            $q->where('is_approved', 0)->orWhereNull('is_approved')->orWhere('is_approved', false);
+        })->count();
+
+        $pendingResearch = DB::table('research_submissions')->where('status', 'pending')->count();
+        $pendingPkm = DB::table('pkm_submissions')->where('status', 'pending')->count();
+        $pendingHki = DB::table('hki_submissions')->where('status', 'pending')->count();
+        $pendingJournal = DB::table('journal_submissions')->where('status', 'pending')->count();
+        $pendingProposal = \Schema::hasTable('pengajuan_proposal') ? DB::table('pengajuan_proposal')->where('status', 'pending')->count() : 0;
 
         return response()->json([
             'berita' => DB::table('berita')->count(),
@@ -139,6 +191,17 @@ class AdminApiController extends Controller
             'hki_formal' => DB::table('hki')->count(),
             'laporan_sidang' => DB::table('laporan_sidang')->count(),
             'laporan_jurnal' => DB::table('laporan_jurnal')->count(),
+
+            // Data untuk badge notifikasi merah:
+            'pending_counts' => [
+                'users' => $pendingDosen,
+                'pending_users' => $pendingDosen,
+                'research_submissions' => $pendingResearch,
+                'pkm_submissions' => $pendingPkm,
+                'hki_submissions' => $pendingHki,
+                'journal_submissions' => $pendingJournal,
+                'pengajuan_proposal' => $pendingProposal,
+            ]
         ]);
     }
 
@@ -158,6 +221,18 @@ class AdminApiController extends Controller
 
         $search = $request->query('search', '');
         $query = DB::table($table);
+
+        // Filter khusus pendaftaran dosen pending
+        if ($table === 'users' && $request->has('pending_dosen')) {
+            $query->where('role', 'dosen')->where(function($q) {
+                $q->where('is_approved', 0)->orWhereNull('is_approved')->orWhere('is_approved', false);
+            });
+        }
+
+        // Filter status umum (misal pending, approved)
+        if ($request->has('status') && $request->query('status')) {
+            $query->where('status', $request->query('status'));
+        }
 
         if ($search) {
             $columns = \Schema::getColumnListing($table);

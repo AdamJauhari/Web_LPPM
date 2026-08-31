@@ -18,6 +18,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'role', 'nim_nip',
         'nidn', 'fakultas', 'jabatan_fungsional',
+        'username', 'is_approved', 'approval_notes',
     ];
 
     /**

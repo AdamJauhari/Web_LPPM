@@ -49,13 +49,18 @@ class AdminController extends Controller
             $role = Auth::user()->role;
 
             // Jika Admin LPPM login via web, arahkan ke panel mandiri
-            if ($role === 'admin' || $role === 'Admin' || $role === 'ADMIN') {
+            if ($role === 'admin' || $role === 'Admin' || $role === 'ADMIN' || $role === 'admin_lppm' || $role === 'admin_uppm') {
                 Auth::logout();
                 return back()->with('error', 'Admin harap login melalui Panel Admin Mandiri (Token).');
             }
 
-            // Dosen diarahkan ke beranda (ada menu Portal Dosen di navbar)
+            // Dosen dicek apakah sudah disetujui (is_approved == 1)
             if ($role === 'dosen') {
+                $user = Auth::user();
+                if (isset($user->is_approved) && ($user->is_approved === 0 || $user->is_approved === '0' || $user->is_approved === false)) {
+                    Auth::logout();
+                    return back()->with('error', 'Akun Dosen Anda belum disetujui (status: PENDING). Harap menunggu konfirmasi/approval dari Administrator LPPM.');
+                }
                 return redirect('/');
             }
 
